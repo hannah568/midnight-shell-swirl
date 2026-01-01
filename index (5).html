@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystic Shell Shuffle</title>
+    <style>
+        :root {
+            --gold: #f1c40f;
+            --gold-glow: rgba(241, 196, 15, 0.6);
+            --magic-purple: #8e44ad;
+            --bg-dark: #050410;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--bg-dark);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .main-card {
+            background: rgba(15, 12, 41, 0.95);
+            border: 2px solid var(--gold);
+            border-radius: 30px;
+            width: 95%;
+            max-width: 1100px; 
+            max-height: 90vh;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            box-sizing: border-box;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            overflow-y: auto;
+        }
+
+        /* Menu UI */
+        .top-nav { position: absolute; top: 25px; right: 25px; z-index: 1000; }
+        .menu-trigger {
+            background: rgba(25, 20, 50, 0.8);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            padding: 12px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background: #151432;
+            border: 2px solid var(--gold);
+            min-width: 200px;
+            border-radius: 15px;
+            margin-top: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+        }
+
+        .dropdown-content button {
+            width: 100%; padding: 18px 25px; background: none; border: none;
+            color: white; cursor: pointer; text-align: left;
+            font-weight: 800; text-transform: uppercase;
+            border-bottom: 1px solid rgba(241, 196, 15, 0.2);
+        }
+        .dropdown-content button:hover { background: var(--gold); color: black; }
+        .show { display: block; }
+
+        /* Game Area Spacing */
+        #game-area {
+            width: 100%;
+            height: 400px;
+            display: flex;
+            justify-content: space-evenly; 
+            align-items: flex-end; 
+            padding-bottom: 40px;
+            margin: 20px 0;
+        }
+
+        .cup-slot {
+            position: relative;
+            width: 180px; 
+            height: 220px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
+
+        /* Cup Design matches the Image */
+        .cup {
+            width: 130px; 
+            height: 180px;
+            background: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
+            /* Bullet shape: Top is a perfect semi-circle */
+            border-radius: 100px 100px 15px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            z-index: 10;
+            position: relative;
+            /* Base rim effect from image */
+            box-shadow: 0 4px 0px -2px rgba(255,255,255,0.2);
+        }
+
+        /* The Gold Band from the image */
+        .cup::after {
+            content: '';
+            position: absolute; 
+            top: 45%; 
+            left: -5%;
+            width: 110%; 
+            height: 6px;
+            background: var(--gold);
+            box-shadow: 0 0 15px var(--gold-glow);
+            z-index: 11;
+        }
+
+        .ball {
+            width: 40px; height: 40px;
+            background: radial-gradient(circle at 30% 30%, #fff, #999);
+            border-radius: 50%;
+            position: absolute;
+            bottom: 10px;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .lift { transform: translateY(-200px); }
+        .visible { opacity: 1; }
+
+        /* Buttons */
+        .btn-gold {
+            background-color: var(--gold);
+            color: #000;
+            border: none;
+            border-radius: 15px;
+            padding: 18px 50px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--gold-glow);
+            margin: 8px;
+            width: 320px;
+        }
+
+        .back-btn {
+            position: absolute; top: 25px; left: 25px;
+            background: transparent; border: 1px solid var(--gold);
+            color: var(--gold); padding: 8px 20px; border-radius: 8px; cursor: pointer;
+        }
+
+        .screen { display: none; flex-direction: column; align-items: center; width: 100%; }
+        .active { display: flex; }
+        
+        .label-header { color: var(--gold); letter-spacing: 3px; margin-bottom: 25px; font-size: 1.8rem; font-weight: bold; }
+        
+        .multiplayer-scores {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .p-score {
+            border: 1px solid var(--gold);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            opacity: 0.5;
+            transition: 0.3s;
+        }
+        
+        .p-score.active-turn {
+            opacity: 1;
+            background: rgba(241, 196, 15, 0.2);
+            border-width: 2px;
+            transform: scale(1.1);
+        }
+
+        .game-dashboard { display: flex; flex-direction: column; align-items: center; margin-top: 10px; }
+        .gemini-box { border: 2px solid var(--magic-purple); padding: 12px 25px; border-radius: 10px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="main-card">
+        <div id="splash-screen" class="screen active" style="justify-content: center; height: 100%;">
+            <h1 style="color:var(--gold); font-size: 3.5rem; text-align: center; margin-bottom: 40px;">MYSTIC SHELL SHUFFLE</h1>
+            <button class="btn-gold" onclick="showScreen('player-screen')">ENTER THE GAME</button>
+        </div>
+
+        <div id="lang-screen" class="screen">
+            <button class="back-btn" onclick="showScreen('splash-screen')">BACK</button>
+            <div class="label-header">LANGUAGE</div>
+            <button class="btn-gold" onclick="showScreen('player-screen')">ENGLISH</button>
+            <button class="btn-gold" onclick="showScreen('player-screen')">繁體中文</button>
+        </div>
+
+        <div id="player-screen" class="screen">
+            <button class="back-btn" onclick="showScreen('lang-screen')">BACK</button>
+            <div class="label-header">SELECT PLAYERS</div>
+            <button class="btn-gold" onclick="setPlayers(1)">SOLO (P1)</button>
+            <button class="btn-gold" onclick="setPlayers(2)">2 PLAYERS</button>
+            <button class="btn-gold" onclick="setPlayers(3)">3 PLAYERS</button>
+            <button class="btn-gold" onclick="setPlayers(4)">4 PLAYERS</button>
+        </div>
+
+        <div id="diff-screen" class="screen">
+            <button class="back-btn" onclick="showScreen('player-screen')">BACK</button>
+            <div class="label-header">DIFFICULTY</div>
+            <button class="btn-gold" onclick="initGame('easy')">EASY</button>
+            <button class="btn-gold" onclick="initGame('medium')">MEDIUM</button>
+            <button class="btn-gold" onclick="initGame('hard')">HARD</button>
+            <button class="btn-gold" onclick="initGame('extreme')">EXTREME</button>
+        </div>
+
+        <div id="game-screen" class="screen">
+            <div class="top-nav">
+                <button class="menu-trigger" onclick="toggleMenu()">MENU ☰</button>
+                <div id="menuDropdown" class="dropdown-content">
+                    <button id="menu-main-action" onclick="handleMenuPause()">PAUSE</button>
+                    <button onclick="toggleMenu()">RESUME</button>
+                    <button onclick="resetBoard(true)">REPLAY</button>
+                    <button onclick="goHome()">HOME</button>
+                </div>
+            </div>
+
+            <div id="game-area"></div>
+
+            <button id="footer-start-btn" class="btn-gold" onclick="playGame()">START SHUFFLE</button>
+
+            <div class="game-dashboard">
+                <div id="player-indicators" class="multiplayer-scores"></div>
+                <div class="gemini-box">✨ ♊ <span id="gemini-msg">"Focus your mind."</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let state = { 
+            mapping: [], isBusy: false, isPaused: false,
+            playerCount: 1, currentPlayer: 0, scores: [0,0,0,0],
+            numCups: 3, difficulty: 'easy', gameActive: false 
+        };
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function toggleMenu() { document.getElementById("menuDropdown").classList.toggle("show"); }
+
+        function setPlayers(num) {
+            state.playerCount = num;
+            state.numCups = (num === 1) ? 3 : 4;
+            showScreen('diff-screen');
+        }
+
+        function initGame(diff) {
+            state.difficulty = diff;
+            state.scores = [0,0,0,0];
+            state.currentPlayer = 0;
+            setupGameArea();
+            updateScoreUI();
+            showScreen('game-screen');
+            resetBoard(true);
+        }
+
+        function updateScoreUI() {
+            const container = document.getElementById('player-indicators');
+            container.innerHTML = '';
+            for(let i=0; i<state.playerCount; i++) {
+                const div = document.createElement('div');
+                div.className = `p-score ${i === state.currentPlayer ? 'active-turn' : ''}`;
+                div.innerHTML = `P${i+1}: <b>${state.scores[i]}</b>`;
+                container.appendChild(div);
+            }
+        }
+
+        function setupGameArea() {
+            const area = document.getElementById('game-area');
+            area.innerHTML = '';
+            state.mapping = Array.from({length: state.numCups}, (_, i) => i);
+            for (let i = 0; i < state.numCups; i++) {
+                const slot = document.createElement('div');
+                slot.id = `slot-${i}`; slot.className = 'cup-slot';
+                if (i === 0) {
+                    const ball = document.createElement('div');
+                    ball.id = 'ball'; ball.className = 'ball';
+                    slot.appendChild(ball);
+                }
+                const cup = document.createElement('div');
+                cup.className = 'cup'; cup.onclick = () => checkWin(i);
+                slot.appendChild(cup);
+                area.appendChild(slot);
+            }
+        }
+
+        function handleMenuPause() {
+            if (!state.gameActive) { playGame(); return; }
+            state.isPaused = !state.isPaused;
+            document.getElementById('menu-main-action').innerText = state.isPaused ? "RESUME" : "PAUSE";
+            toggleMenu();
+        }
+
+        function resetBoard(hardReset = false) {
+            state.gameActive = false; state.isPaused = false;
+            document.getElementById('menu-main-action').innerText = "PAUSE";
+            state.mapping = Array.from({length: state.numCups}, (_, i) => i);
+            if(hardReset) { 
+                state.scores = [0,0,0,0]; state.currentPlayer = 0; 
+                updateScoreUI();
+                document.getElementById('gemini-msg').innerText = "P1's turn to watch!";
+            }
+            document.querySelectorAll('.cup-slot').forEach(el => el.style.transform = `translateX(0px)`);
+            document.querySelectorAll('.cup').forEach(c => c.classList.remove('lift'));
+            document.getElementById('ball').classList.remove('visible');
+            document.getElementById('footer-start-btn').style.display = 'block';
+            state.isBusy = false;
+            const d = document.getElementById("menuDropdown"); if (d.classList.contains("show")) d.classList.remove("show");
+        }
+
+        function goHome() { resetBoard(true); showScreen('splash-screen'); }
+
+        async function playGame() {
+            if(state.isBusy) return;
+            state.isBusy = true; state.gameActive = true;
+            document.getElementById('footer-start-btn').style.display = 'none';
+            document.getElementById('gemini-msg').innerText = `P${state.currentPlayer + 1} focus...`;
+            
+            const ball = document.getElementById('ball');
+            const cups = document.querySelectorAll('.cup');
+            
+            cups.forEach(c => c.classList.add('lift')); ball.classList.add('visible');
+            await new Promise(r => setTimeout(r, 1000));
+            cups.forEach(c => c.classList.remove('lift'));
+            await new Promise(r => setTimeout(r, 600));
+            ball.classList.remove('visible');
+
+            let rounds = 10;
+            let shuffleInterval = 400; 
+
+            if (state.difficulty === 'easy') { 
+                rounds = 6; shuffleInterval = 650; 
+            } else if (state.difficulty === 'medium') { 
+                rounds = 10; shuffleInterval = 450; 
+            } else if (state.difficulty === 'hard') { 
+                rounds = 15; shuffleInterval = 320; 
+            } else if (state.difficulty === 'extreme') { 
+                rounds = 20; shuffleInterval = 220; 
+            }
+
+            for(let i=0; i < rounds; i++) {
+                while(state.isPaused) await new Promise(r => setTimeout(r, 100));
+                await performSwap(shuffleInterval);
+                await new Promise(r => setTimeout(r, 50));
+            }
+            state.isBusy = false;
+            document.getElementById('gemini-msg').innerText = `P${state.currentPlayer + 1}, pick your cup!`;
+        }
+
+        async function performSwap(interval) {
+            let pA = Math.floor(Math.random() * state.numCups), pB = Math.floor(Math.random() * state.numCups);
+            while (pA === pB) pB = Math.floor(Math.random() * state.numCups);
+            
+            const idA = state.mapping[pA], idB = state.mapping[pB];
+            const elA = document.getElementById(`slot-${idA}`), elB = document.getElementById(`slot-${idB}`);
+            
+            const animSpeed = interval * 0.95;
+            elA.style.transitionDuration = `${animSpeed}ms`;
+            elB.style.transitionDuration = `${animSpeed}ms`;
+
+            const dist = elB.getBoundingClientRect().left - elA.getBoundingClientRect().left;
+            const matA = new WebKitCSSMatrix(window.getComputedStyle(elA).transform), matB = new WebKitCSSMatrix(window.getComputedStyle(elB).transform);
+            
+            elA.style.transform = `translateX(${matA.m41 + dist}px)`; 
+            elB.style.transform = `translateX(${matB.m41 - dist}px)`;
+            
+            state.mapping[pA] = idB; state.mapping[pB] = idA;
+
+            await new Promise(r => setTimeout(r, interval));
+        }
+
+        function checkWin(idx) {
+            if(state.isBusy || state.isPaused || !state.gameActive) return;
+            state.isBusy = true;
+            document.querySelectorAll('.cup').forEach(c => c.classList.add('lift'));
+            document.getElementById('ball').classList.add('visible');
+            
+            if(idx === 0) {
+                state.scores[state.currentPlayer]++;
+                document.getElementById('gemini-msg').innerText = `P${state.currentPlayer+1} Got it!`;
+            } else {
+                document.getElementById('gemini-msg').innerText = `P${state.currentPlayer+1} Missed!`;
+            }
+
+            state.currentPlayer = (state.currentPlayer + 1) % state.playerCount;
+            
+            setTimeout(() => { 
+                updateScoreUI();
+                resetBoard(false); 
+                document.getElementById('gemini-msg').innerText = `P${state.currentPlayer+1}'s turn. Ready?`;
+            }, 2000);
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.menu-trigger')) {
+                const dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    let openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
