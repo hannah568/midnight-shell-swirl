@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystic Shell Shuffle</title>
+    <style>
+        :root {
+            --gold: #f1c40f;
+            --gold-glow: rgba(241, 196, 15, 0.6);
+            --magic-purple: #8e44ad;
+            --bg-dark: #050410;
+            --dynamic-hue: 0deg;
+        }
+
+        @keyframes rotateGlow {
+            0% { rotate: 0deg; }
+            100% { rotate: 360deg; }
+        }
+
+        @keyframes hueShift {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--bg-dark);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Snow Animation */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 9999;
+            color: white;
+            font-size: 1em;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                top: -10%;
+                opacity: 0.8;
+            }
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
+
+        .snowflake:nth-child(1) { left: 10%; animation-duration: 10s; animation-delay: 0s; }
+        .snowflake:nth-child(2) { left: 20%; animation-duration: 12s; animation-delay: 2s; }
+        .snowflake:nth-child(3) { left: 30%; animation-duration: 8s; animation-delay: 4s; }
+        .snowflake:nth-child(4) { left: 40%; animation-duration: 14s; animation-delay: 1s; }
+        .snowflake:nth-child(5) { left: 50%; animation-duration: 11s; animation-delay: 3s; }
+        .snowflake:nth-child(6) { left: 60%; animation-duration: 9s; animation-delay: 5s; }
+        .snowflake:nth-child(7) { left: 70%; animation-duration: 13s; animation-delay: 2.5s; }
+        .snowflake:nth-child(8) { left: 80%; animation-duration: 10.5s; animation-delay: 4.5s; }
+        .snowflake:nth-child(9) { left: 90%; animation-duration: 12.5s; animation-delay: 1.5s; }
+        .snowflake:nth-child(10) { left: 15%; animation-duration: 11.5s; animation-delay: 3.5s; }
+        .snowflake:nth-child(11) { left: 25%; animation-duration: 9.5s; animation-delay: 0.5s; }
+        .snowflake:nth-child(12) { left: 35%; animation-duration: 13.5s; animation-delay: 2.8s; }
+        .snowflake:nth-child(13) { left: 45%; animation-duration: 10.8s; animation-delay: 4.2s; }
+        .snowflake:nth-child(14) { left: 55%; animation-duration: 12.2s; animation-delay: 1.8s; }
+        .snowflake:nth-child(15) { left: 65%; animation-duration: 8.5s; animation-delay: 3.2s; }
+        .snowflake:nth-child(16) { left: 75%; animation-duration: 14.5s; animation-delay: 5.5s; }
+        .snowflake:nth-child(17) { left: 85%; animation-duration: 11.2s; animation-delay: 0.8s; }
+        .snowflake:nth-child(18) { left: 95%; animation-duration: 9.8s; animation-delay: 4.8s; }
+        .snowflake:nth-child(19) { left: 5%; animation-duration: 13.2s; animation-delay: 2.2s; }
+        .snowflake:nth-child(20) { left: 22%; animation-duration: 10.2s; animation-delay: 3.8s; }
+
+        .main-card {
+            background: rgba(15, 12, 41, 0.95);
+            border: 2px solid var(--gold);
+            border-radius: 30px;
+            width: 95%;
+            max-width: 1100px; 
+            max-height: 90vh;
+            padding: 30px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            box-sizing: border-box;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            overflow-x: hidden;
+            overflow-y: auto;
+            transition: all 0.4s ease;
+        }
+
+        .main-card::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 30px;
+            padding: 4px;
+            background: conic-gradient(
+                from 0deg,
+                #ff0000 0deg,
+                #ff7700 60deg,
+                #ffff00 120deg,
+                #00ff00 180deg,
+                #0099ff 240deg,
+                #9933ff 300deg,
+                #ff0000 360deg
+            );
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: -1;
+            animation: rotateGlow 3s linear infinite, hueShift 10s linear infinite;
+            filter: blur(20px);
+        }
+
+        .main-card::after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            background: rgba(15, 12, 41, 0.95);
+            border-radius: 28px;
+            z-index: -1;
+        }
+
+        .main-card:hover {
+            box-shadow: 0 0 60px rgba(241, 196, 15, 0.3), 0 0 100px rgba(241, 196, 15, 0.2);
+            border-color: #f9d849;
+        }
+
+        /* Menu UI */
+        .top-nav { position: absolute; top: 25px; right: 25px; z-index: 1000; }
+        .menu-trigger {
+            background: rgba(25, 20, 50, 0.8);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            z-index: 2;
+            padding: 12px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 900;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            animation: hueShift 10s linear infinite;
+        }
+
+        .menu-trigger:hover {
+            background: rgba(241, 196, 15, 0.2);
+            box-shadow: 0 0 20px var(--gold-glow), 0 0 35px var(--gold-glow);
+            transform: scale(1.05);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background: #151432;
+            border: 2px solid var(--gold);
+            min-width: 200px;
+            border-radius: 15px;
+            margin-top: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+        }
+
+        .dropdown-content button {
+            width: 100%; padding: 18px 25px; background: none; border: none;
+            color: white; cursor: pointer; text-align: left;
+            font-weight: 800; text-transform: uppercase;
+            border-bottom: 1px solid rgba(241, 196, 15, 0.2);
+            transition: all 0.2s ease;
+            animation: hueShift 10s linear infinite;
+        }
+        .dropdown-content button:hover { 
+            background: var(--gold); 
+            color: black;
+            box-shadow: inset 0 0 20px rgba(241, 196, 15, 0.5);
+        }
+        .show { display: block; }
+
+        /* Game Area Spacing */
+        #game-area {
+            width: 100%;
+            height: 280px;
+            display: flex;
+            justify-content: space-evenly; 
+            align-items: flex-end; 
+            padding-bottom: 20px;
+            margin: 15px 0;
+        }
+
+        .cup-slot {
+            position: relative;
+            width: 140px; 
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
+
+        /* Cup Design matches the Image */
+        .cup {
+            width: 100px; 
+            height: 140px;
+            background: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
+            /* Bullet shape: Top is a perfect semi-circle */
+            border-radius: 80px 80px 12px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            z-index: 10;
+            position: relative;
+            /* Base rim effect from image */
+            box-shadow: 0 4px 0px -2px rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .cup:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 25px var(--gold-glow), 0 0 45px var(--gold-glow), 0 4px 0px -2px rgba(255,255,255,0.4);
+            border: 1px solid var(--gold);
+        }
+
+        .cup:hover::after {
+            box-shadow: 0 0 25px var(--gold-glow), 0 0 40px var(--gold);
+        }
+
+        /* The Gold Band from the image */
+        .cup::after {
+            content: '';
+            position: absolute; 
+            top: 45%; 
+            left: -5%;
+            width: 110%; 
+            height: 6px;
+            background: var(--gold);
+            box-shadow: 0 0 15px var(--gold-glow);
+            z-index: 11;
+        }
+
+        .ball {
+            width: 40px; height: 40px;
+            background: radial-gradient(circle at 30% 30%, #fff, #999);
+            border-radius: 50%;
+            position: absolute;
+            bottom: 10px;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .lift { transform: translateY(-200px); }
+        .visible { opacity: 1; }
+
+        /* Buttons */
+        .btn-gold {
+            background-color: var(--gold);
+            color: #000;
+            border: none;
+            border-radius: 15px;
+            padding: 12px 35px;
+            font-size: 1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--gold-glow);
+            margin: 6px;
+            width: 280px;
+            transition: all 0.3s ease;
+            animation: hueShift 10s linear infinite;
+        }
+
+        .btn-gold:hover {
+            background-color: #f9d849;
+            box-shadow: 0 0 30px var(--gold-glow), 0 0 50px var(--gold-glow), 0 0 70px rgba(241, 196, 15, 0.4);
+            transform: translateY(-3px) scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .btn-gold.selected {
+            background: linear-gradient(135deg, #f9d849, var(--gold));
+            box-shadow: 0 0 25px var(--gold-glow), 0 0 45px var(--gold-glow), inset 0 0 20px rgba(0, 0, 0, 0.3);
+            transform: scale(1.08);
+            border: 2px solid #fff;
+        }
+
+        .btn-gold:disabled {
+            background-color: #666;
+            color: #333;
+            cursor: not-allowed;
+            opacity: 0.5;
+            box-shadow: none;
+            animation: none;
+        }
+
+        .btn-gold:disabled:hover {
+            transform: none;
+            filter: none;
+            box-shadow: none;
+        }
+
+        .difficulty-info {
+            font-size: 0.75rem;
+            margin-top: 4px;
+            opacity: 0.8;
+            font-weight: 600;
+        }
+
+        .current-difficulty {
+            border: 1px solid var(--gold);
+            padding: 8px 20px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+            background: rgba(241, 196, 15, 0.1);
+            animation: hueShift 10s linear infinite;
+        }
+
+        .current-difficulty span {
+            color: var(--gold);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .back-btn {
+            position: absolute; top: 25px; left: 25px;
+            background: transparent; border: 1px solid var(--gold);
+            color: var(--gold); padding: 8px 20px; border-radius: 8px; cursor: pointer;
+            transition: all 0.3s ease;
+            animation: hueShift 10s linear infinite;
+        }
+
+        .back-btn:hover {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 20px var(--gold-glow), 0 0 40px var(--gold-glow);
+            transform: scale(1.1);
+        }
+
+        .screen { display: none; flex-direction: column; align-items: center; width: 100%; }
+        .active { display: flex; }
+        
+        .label-header { color: var(--gold); letter-spacing: 2px; margin-bottom: 15px; font-size: 1.5rem; font-weight: bold; animation: hueShift 10s linear infinite; }
+        
+        .multiplayer-scores {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .p-score {
+            border: 1px solid var(--gold);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            animation: hueShift 10s linear infinite;
+        }
+
+        .p-score:hover {
+            opacity: 0.8;
+            box-shadow: 0 0 15px var(--gold-glow);
+            transform: scale(1.05);
+        }
+        
+        .p-score.active-turn {
+            opacity: 1;
+            background: rgba(241, 196, 15, 0.2);
+            border-width: 2px;
+            transform: scale(1.1);
+        }
+
+        .p-score.active-turn:hover {
+            box-shadow: 0 0 20px var(--gold-glow), 0 0 35px var(--gold-glow);
+            transform: scale(1.15);
+        }
+
+        .game-dashboard { display: flex; flex-direction: column; align-items: center; margin-top: 10px; }
+        .gemini-box { 
+            border: 2px solid var(--magic-purple); 
+            padding: 12px 25px; 
+            border-radius: 10px; 
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            animation: hueShift 10s linear infinite;
+        }
+
+        .gemini-box:hover {
+            box-shadow: 0 0 20px rgba(142, 68, 173, 0.5), 0 0 40px rgba(142, 68, 173, 0.3);
+            border-color: #a569bd;
+            transform: scale(1.02);
+        }
+        
+        /* Credits */
+        .credits {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(241, 196, 15, 0.7);
+            font-size: 0.85rem;
+            text-align: center;
+            z-index: 100;
+            letter-spacing: 1px;
+            animation: hueShift 10s linear infinite;
+        }
+        
+        .credits span {
+            font-weight: bold;
+            color: var(--gold);
+        }
+    </style>
+</head>
+<body>
+    <!-- Snow Animation -->
+    <div class="snowflake">❄</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❄</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❄</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❄</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❄</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❄</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❄</div>
+    <div class="snowflake">❅</div>
+
+    <div class="main-card">
+        <div id="splash-screen" class="screen active" style="justify-content: center; height: 100%;">
+            <h1 style="font-size: 2.5rem; text-align: center; margin-bottom: 25px; background: linear-gradient(90deg, #ff0000, #ff7700, #ffff00, #00ff00, #0099ff, #9933ff, #ff0000); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: hueShift 10s linear infinite;">MYSTIC SHELL SHUFFLE</h1>
+            <button class="btn-gold" onclick="showScreen('lang-screen')">ENTER THE GAME</button>
+            <div class="credits">
+                Developed by <span>白漢娜 - HANNAH KEZIA BARGAMENTO</span>
+            </div>
+        </div>
+
+        <div id="lang-screen" class="screen">
+            <button class="back-btn" onclick="showScreen('splash-screen')">«</button>
+            <div class="label-header">LANGUAGE</div>
+            <button class="btn-gold" onclick="setLanguage('en')">ENGLISH</button>
+            <button class="btn-gold" onclick="setLanguage('zh')">繁體中文</button>
+        </div>
+
+        <div id="player-screen" class="screen">
+            <button class="back-btn" onclick="showScreen('lang-screen')">«</button>
+            <div class="label-header">SELECT PLAYERS</div>
+            <button class="btn-gold" onclick="setPlayers(1)">SOLO (P1)</button>
+            <button class="btn-gold" onclick="setPlayers(2)">2 PLAYERS</button>
+            <button class="btn-gold" onclick="setPlayers(3)">3 PLAYERS</button>
+            <button class="btn-gold" onclick="setPlayers(4)">4 PLAYERS</button>
+        </div>
+
+        <div id="diff-screen" class="screen">
+            <button class="back-btn" onclick="showScreen('player-screen')">«</button>
+            <div class="label-header">DIFFICULTY</div>
+            <button class="btn-gold diff-btn" data-difficulty="easy" onclick="selectDifficulty('easy')">
+                EASY
+                <div class="difficulty-info">Slow Speed</div>
+            </button>
+            <button class="btn-gold diff-btn" data-difficulty="medium" onclick="selectDifficulty('medium')">
+                MEDIUM
+                <div class="difficulty-info">Medium Speed</div>
+            </button>
+            <button class="btn-gold diff-btn" data-difficulty="hard" onclick="selectDifficulty('hard')">
+                HARD
+                <div class="difficulty-info">Fast Speed</div>
+            </button>
+            <button class="btn-gold diff-btn" data-difficulty="extreme" onclick="selectDifficulty('extreme')">
+                EXTREME
+                <div class="difficulty-info">Very Fast</div>
+            </button>
+            <button class="btn-gold" id="start-game-btn" onclick="initGame()" style="margin-top: 20px; display: none;">START GAME</button>
+        </div>
+
+        <div id="game-screen" class="screen">
+            <div class="top-nav">
+                <button class="menu-trigger" onclick="toggleMenu()">☰</button>
+                <div id="menuDropdown" class="dropdown-content">
+                    <button id="menu-main-action" onclick="handleMenuPause()">⏸️</button>
+                    <button onclick="toggleMenu()">▶️</button>
+                    <button onclick="resetBoard(true)">🔄</button>
+                    <button onclick="goHome()">🏠</button>
+                </div>
+            </div>
+
+            <div id="game-area"></div>
+
+            <button id="footer-start-btn" class="btn-gold" onclick="playGame()">START SHUFFLE</button>
+
+            <div class="game-dashboard">
+                <div id="player-indicators" class="multiplayer-scores"></div>
+                <div class="current-difficulty" id="diff-display"></div>
+                <div class="gemini-box">✨ ♊ <span id="gemini-msg">"Focus your mind."</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let state = { 
+            mapping: [], isBusy: false, isPaused: false,
+            playerCount: 1, currentPlayer: 0, scores: [0,0,0,0],
+            numCups: 3, difficulty: null, gameActive: false,
+            language: 'en', difficultySelected: false
+        };
+
+        const difficultySettings = {
+            easy: { rounds: 8, interval: 700, complexChance: 0, ballChance: 0.3, label: 'Easy', desc: 'Slow Speed' },
+            medium: { rounds: 8, interval: 450, complexChance: 0.2, ballChance: 0.5, label: 'Medium', desc: 'Medium Speed' },
+            hard: { rounds: 10, interval: 300, complexChance: 0.4, ballChance: 0.7, label: 'Hard', desc: 'Fast Speed' },
+            extreme: { rounds: 10, interval: 180, complexChance: 0.6, ballChance: 0.85, label: 'Extreme', desc: 'Very Fast' }
+        };
+
+        const translations = {
+            en: {
+                title: 'MYSTIC SHELL SHUFFLE',
+                enterGame: 'ENTER THE GAME',
+                language: 'LANGUAGE',
+                english: 'ENGLISH',
+                chinese: '繁體中文',
+                selectPlayers: 'SELECT PLAYERS',
+                solo: 'SOLO (P1)',
+                players2: '2 PLAYERS',
+                players3: '3 PLAYERS',
+                players4: '4 PLAYERS',
+                difficulty: 'DIFFICULTY',
+                easy: 'EASY',
+                medium: 'MEDIUM',
+                hard: 'HARD',
+                extreme: 'EXTREME',
+                menu: '☰',
+                pause: '⏸️',
+                resume: '▶️',
+                replay: '🔄',
+                home: '🏠',
+                startShuffle: 'START SHUFFLE',
+                focusMind: '"Focus your mind."',
+                back: '«',
+                turnWatch: "P{n}'s turn to watch!",
+                focus: 'P{n} focus...',
+                pickCup: 'P{n}, pick your cup!',
+                gotIt: 'P{n} Got it!',
+                missed: 'P{n} Missed!',
+                ready: "P{n}'s turn. Ready?"
+            },
+            zh: {
+                title: '神秘貝殼洗牌',
+                enterGame: '進入遊戲',
+                language: '語言',
+                english: 'ENGLISH',
+                chinese: '繁體中文',
+                selectPlayers: '選擇玩家',
+                solo: '單人 (P1)',
+                players2: '2位玩家',
+                players3: '3位玩家',
+                players4: '4位玩家',
+                difficulty: '難度',
+                easy: '簡單',
+                medium: '中等',
+                hard: '困難',
+                extreme: '極限',
+                menu: '☰',
+                pause: '⏸️',
+                resume: '▶️',
+                replay: '🔄',
+                home: '🏠',
+                startShuffle: '開始洗牌',
+                focusMind: '"集中你的心神。"',
+                back: '«',
+                turnWatch: 'P{n} 的回合！',
+                focus: 'P{n} 集中...',
+                pickCup: 'P{n}，選擇你的杯子！',
+                gotIt: 'P{n} 猜對了！',
+                missed: 'P{n} 猜錯了！',
+                ready: 'P{n} 的回合。準備好了嗎？'
+            }
+        };
+
+        function setLanguage(lang) {
+            state.language = lang;
+            updateAllText();
+            showScreen('player-screen');
+        }
+
+        function t(key, replacements = {}) {
+            let text = translations[state.language][key] || translations['en'][key] || key;
+            Object.keys(replacements).forEach(k => {
+                text = text.replace(`{${k}}`, replacements[k]);
+            });
+            return text;
+        }
+
+        function updateAllText() {
+            // Splash screen
+            document.querySelector('#splash-screen h1').textContent = t('title');
+            document.querySelector('#splash-screen .btn-gold').textContent = t('enterGame');
+            
+            // Language screen
+            document.querySelector('#lang-screen .label-header').textContent = t('language');
+            const langBtns = document.querySelectorAll('#lang-screen .btn-gold');
+            langBtns[0].textContent = t('english');
+            langBtns[1].textContent = t('chinese');
+            
+            // Player screen
+            document.querySelector('#player-screen .label-header').textContent = t('selectPlayers');
+            const playerBtns = document.querySelectorAll('#player-screen .btn-gold');
+            playerBtns[0].textContent = t('solo');
+            playerBtns[1].textContent = t('players2');
+            playerBtns[2].textContent = t('players3');
+            playerBtns[3].textContent = t('players4');
+            
+            // Difficulty screen
+            document.querySelector('#diff-screen .label-header').textContent = t('difficulty');
+            const diffBtns = document.querySelectorAll('#diff-screen .btn-gold');
+            diffBtns[0].textContent = t('easy');
+            diffBtns[1].textContent = t('medium');
+            diffBtns[2].textContent = t('hard');
+            diffBtns[3].textContent = t('extreme');
+            
+            // Game screen
+            document.querySelector('.menu-trigger').textContent = t('menu');
+            const menuBtns = document.querySelectorAll('#menuDropdown button');
+            menuBtns[0].textContent = t('pause');
+            menuBtns[1].textContent = t('resume');
+            menuBtns[2].textContent = t('replay');
+            menuBtns[3].textContent = t('home');
+            
+            document.querySelector('#footer-start-btn').textContent = t('startShuffle');
+            document.querySelector('#gemini-msg').textContent = t('focusMind');
+            
+            // Back buttons
+            document.querySelectorAll('.back-btn').forEach(btn => {
+                btn.textContent = t('back');
+            });
+        }
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function toggleMenu() { document.getElementById("menuDropdown").classList.toggle("show"); }
+
+        function setPlayers(num) {
+            state.playerCount = num;
+            state.numCups = (num === 1) ? 3 : 4;
+            state.difficultySelected = false;
+            state.difficulty = null;
+            showScreen('diff-screen');
+            updateDifficultyButtons();
+        }
+
+        function selectDifficulty(diff) {
+            if (state.gameActive) return;
+            state.difficulty = diff;
+            state.difficultySelected = true;
+            updateDifficultyButtons();
+            document.getElementById('start-game-btn').style.display = 'block';
+        }
+
+        function updateDifficultyButtons() {
+            const buttons = document.querySelectorAll('.diff-btn');
+            buttons.forEach(btn => {
+                const diff = btn.getAttribute('data-difficulty');
+                if (diff === state.difficulty) {
+                    btn.classList.add('selected');
+                } else {
+                    btn.classList.remove('selected');
+                }
+                btn.disabled = state.gameActive;
+            });
+        }
+
+        function initGame() {
+            if (!state.difficulty) return;
+            state.scores = [0,0,0,0];
+            state.currentPlayer = 0;
+            setupGameArea();
+            updateScoreUI();
+            updateDifficultyDisplay();
+            showScreen('game-screen');
+            resetBoard(true);
+        }
+
+        function updateDifficultyDisplay() {
+            const display = document.getElementById('diff-display');
+            if (state.difficulty && difficultySettings[state.difficulty]) {
+                const settings = difficultySettings[state.difficulty];
+                display.innerHTML = `Difficulty: <span>${settings.label}</span> - ${settings.desc}`;
+            }
+        }
+
+        function updateScoreUI() {
+            const container = document.getElementById('player-indicators');
+            container.innerHTML = '';
+            for(let i=0; i<state.playerCount; i++) {
+                const div = document.createElement('div');
+                div.className = `p-score ${i === state.currentPlayer ? 'active-turn' : ''}`;
+                div.innerHTML = `P${i+1}: <b>${state.scores[i]}</b>`;
+                container.appendChild(div);
+            }
+        }
+
+        function setupGameArea() {
+            const area = document.getElementById('game-area');
+            area.innerHTML = '';
+            state.mapping = Array.from({length: state.numCups}, (_, i) => i);
+            for (let i = 0; i < state.numCups; i++) {
+                const slot = document.createElement('div');
+                slot.id = `slot-${i}`; slot.className = 'cup-slot';
+                if (i === 0) {
+                    const ball = document.createElement('div');
+                    ball.id = 'ball'; ball.className = 'ball';
+                    slot.appendChild(ball);
+                }
+                const cup = document.createElement('div');
+                cup.className = 'cup'; cup.onclick = () => checkWin(i);
+                slot.appendChild(cup);
+                area.appendChild(slot);
+            }
+        }
+
+        function handleMenuPause() {
+            if (!state.gameActive) { playGame(); return; }
+            state.isPaused = !state.isPaused;
+            document.getElementById('menu-main-action').innerText = state.isPaused ? t('resume') : t('pause');
+            toggleMenu();
+        }
+
+        function resetBoard(hardReset = false) {
+            state.gameActive = false; state.isPaused = false;
+            document.getElementById('menu-main-action').innerText = t('pause');
+            state.mapping = Array.from({length: state.numCups}, (_, i) => i);
+            if(hardReset) { 
+                state.scores = [0,0,0,0]; state.currentPlayer = 0; 
+                updateScoreUI();
+                document.getElementById('gemini-msg').innerText = t('turnWatch', {n: 1});
+            }
+            document.querySelectorAll('.cup-slot').forEach(el => el.style.transform = `translateX(0px)`);
+            document.querySelectorAll('.cup').forEach(c => c.classList.remove('lift'));
+            document.getElementById('ball').classList.remove('visible');
+            document.getElementById('footer-start-btn').style.display = 'block';
+            state.isBusy = false;
+            const d = document.getElementById("menuDropdown"); if (d.classList.contains("show")) d.classList.remove("show");
+        }
+
+        function goHome() { 
+            resetBoard(true); 
+            state.difficulty = null;
+            state.difficultySelected = false;
+            showScreen('splash-screen'); 
+        }
+
+        async function playGame() {
+            if(state.isBusy) return;
+            state.isBusy = true; state.gameActive = true;
+            document.getElementById('footer-start-btn').style.display = 'none';
+            document.getElementById('gemini-msg').innerText = t('focus', {n: state.currentPlayer + 1});
+            
+            const ball = document.getElementById('ball');
+            const cups = document.querySelectorAll('.cup');
+            
+            cups.forEach(c => c.classList.add('lift')); ball.classList.add('visible');
+            await new Promise(r => setTimeout(r, 1000));
+            cups.forEach(c => c.classList.remove('lift'));
+            await new Promise(r => setTimeout(r, 600));
+            ball.classList.remove('visible');
+
+            // Get difficulty settings
+            const settings = difficultySettings[state.difficulty] || difficultySettings.medium;
+            const rounds = settings.rounds;
+            const shuffleInterval = settings.interval;
+            const complexMoveChance = settings.complexChance;
+            const ballFocusChance = settings.ballChance;
+
+            // Track recent swaps to avoid repetitive patterns
+            let recentSwaps = [];
+            const maxRecentSwaps = 3;
+
+            for(let i=0; i < rounds; i++) {
+                while(state.isPaused) await new Promise(r => setTimeout(r, 100));
+                
+                // Decide if this should be a complex move
+                if (Math.random() < complexMoveChance && state.numCups >= 3) {
+                    await performComplexMove(shuffleInterval, recentSwaps);
+                } else {
+                    await performSwap(shuffleInterval, recentSwaps, ballFocusChance);
+                }
+                
+                await new Promise(r => setTimeout(r, 50));
+            }
+            state.isBusy = false;
+            document.getElementById('gemini-msg').innerText = t('pickCup', {n: state.currentPlayer + 1});
+        }
+
+        async function performSwap(interval, recentSwaps = [], ballFocusChance = 0.5) {
+            let pA, pB;
+            let attempts = 0;
+            const maxAttempts = 20;
+            
+            // Find ball position in mapping
+            const ballPos = state.mapping.indexOf(0);
+            
+            // Higher difficulty increases chance of moving the ball cup
+            if (Math.random() < ballFocusChance) {
+                // Pick the ball cup as one of the positions
+                pA = ballPos;
+                pB = Math.floor(Math.random() * state.numCups);
+                while (pB === pA) pB = Math.floor(Math.random() * state.numCups);
+            } else {
+                // Pick two random positions, avoid recent patterns
+                do {
+                    pA = Math.floor(Math.random() * state.numCups);
+                    pB = Math.floor(Math.random() * state.numCups);
+                    while (pA === pB) pB = Math.floor(Math.random() * state.numCups);
+                    
+                    // Check if this swap was done recently
+                    const swapKey = [Math.min(pA, pB), Math.max(pA, pB)].join('-');
+                    const isRecent = recentSwaps.includes(swapKey);
+                    
+                    if (!isRecent || attempts >= maxAttempts) break;
+                    attempts++;
+                } while (attempts < maxAttempts);
+            }
+            
+            // Track this swap
+            const swapKey = [Math.min(pA, pB), Math.max(pA, pB)].join('-');
+            recentSwaps.push(swapKey);
+            if (recentSwaps.length > 3) recentSwaps.shift();
+            
+            const idA = state.mapping[pA], idB = state.mapping[pB];
+            const elA = document.getElementById(`slot-${idA}`), elB = document.getElementById(`slot-${idB}`);
+            
+            const animSpeed = interval * 0.95;
+            elA.style.transitionDuration = `${animSpeed}ms`;
+            elB.style.transitionDuration = `${animSpeed}ms`;
+
+            const dist = elB.getBoundingClientRect().left - elA.getBoundingClientRect().left;
+            const matA = new WebKitCSSMatrix(window.getComputedStyle(elA).transform), matB = new WebKitCSSMatrix(window.getComputedStyle(elB).transform);
+            
+            elA.style.transform = `translateX(${matA.m41 + dist}px)`; 
+            elB.style.transform = `translateX(${matB.m41 - dist}px)`;
+            
+            state.mapping[pA] = idB; state.mapping[pB] = idA;
+
+            await new Promise(r => setTimeout(r, interval));
+        }
+
+        async function performComplexMove(interval, recentSwaps = []) {
+            // Complex moves: 3-way rotation, or rapid double-swap
+            const moveType = Math.random();
+            
+            if (moveType < 0.5 && state.numCups >= 3) {
+                // 3-way rotation (A -> B -> C -> A)
+                let positions = [];
+                while (positions.length < 3) {
+                    const pos = Math.floor(Math.random() * state.numCups);
+                    if (!positions.includes(pos)) positions.push(pos);
+                }
+                
+                const [p1, p2, p3] = positions;
+                const id1 = state.mapping[p1], id2 = state.mapping[p2], id3 = state.mapping[p3];
+                const el1 = document.getElementById(`slot-${id1}`);
+                const el2 = document.getElementById(`slot-${id2}`);
+                const el3 = document.getElementById(`slot-${id3}`);
+                
+                const animSpeed = interval * 1.2;
+                el1.style.transitionDuration = `${animSpeed}ms`;
+                el2.style.transitionDuration = `${animSpeed}ms`;
+                el3.style.transitionDuration = `${animSpeed}ms`;
+                
+                const mat1 = new WebKitCSSMatrix(window.getComputedStyle(el1).transform);
+                const mat2 = new WebKitCSSMatrix(window.getComputedStyle(el2).transform);
+                const mat3 = new WebKitCSSMatrix(window.getComputedStyle(el3).transform);
+                
+                const pos1 = el1.getBoundingClientRect().left;
+                const pos2 = el2.getBoundingClientRect().left;
+                const pos3 = el3.getBoundingClientRect().left;
+                
+                // Rotate: 1->2, 2->3, 3->1
+                el1.style.transform = `translateX(${mat1.m41 + (pos2 - pos1)}px)`;
+                el2.style.transform = `translateX(${mat2.m41 + (pos3 - pos2)}px)`;
+                el3.style.transform = `translateX(${mat3.m41 + (pos1 - pos3)}px)`;
+                
+                state.mapping[p1] = id3;
+                state.mapping[p2] = id1;
+                state.mapping[p3] = id2;
+                
+                await new Promise(r => setTimeout(r, interval * 1.2));
+                
+            } else {
+                // Double swap: swap two pairs quickly
+                await performSwap(interval * 0.7, recentSwaps, 0.6);
+                await new Promise(r => setTimeout(r, interval * 0.2));
+                await performSwap(interval * 0.7, recentSwaps, 0.6);
+            }
+        }
+
+        function checkWin(idx) {
+            if(state.isBusy || state.isPaused || !state.gameActive) return;
+            state.isBusy = true;
+            document.querySelectorAll('.cup').forEach(c => c.classList.add('lift'));
+            document.getElementById('ball').classList.add('visible');
+            
+            if(idx === 0) {
+                // Correct guess - award point and move to next player
+                state.scores[state.currentPlayer]++;
+                document.getElementById('gemini-msg').innerText = t('gotIt', {n: state.currentPlayer + 1});
+                
+                // Move to next player in multiplayer mode
+                if(state.playerCount > 1) {
+                    state.currentPlayer = (state.currentPlayer + 1) % state.playerCount;
+                }
+                
+                setTimeout(() => { 
+                    updateScoreUI();
+                    resetBoard(false);
+                    // Auto-start next shuffle for next player
+                    setTimeout(() => {
+                        playGame();
+                    }, 800);
+                }, 1500);
+            } else {
+                // Incorrect guess - move to next player
+                document.getElementById('gemini-msg').innerText = t('missed', {n: state.currentPlayer + 1});
+                state.currentPlayer = (state.currentPlayer + 1) % state.playerCount;
+                
+                setTimeout(() => { 
+                    updateScoreUI();
+                    resetBoard(false); 
+                    document.getElementById('gemini-msg').innerText = t('ready', {n: state.currentPlayer + 1});
+                }, 2000);
+            }
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.menu-trigger')) {
+                const dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    let openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
