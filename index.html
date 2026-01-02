@@ -23,6 +23,23 @@
             100% { filter: hue-rotate(360deg); }
         }
 
+        @keyframes screenShake {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-8px, 2px); }
+            20% { transform: translate(8px, -2px); }
+            30% { transform: translate(-8px, -2px); }
+            40% { transform: translate(8px, 2px); }
+            50% { transform: translate(-8px, 2px); }
+            60% { transform: translate(8px, -2px); }
+            70% { transform: translate(-4px, 2px); }
+            80% { transform: translate(4px, -2px); }
+            90% { transform: translate(-2px, 1px); }
+        }
+
+        .screen-shake {
+            animation: screenShake 0.5s ease-in-out;
+        }
+
         body {
             margin: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -86,16 +103,16 @@
             border-radius: 30px;
             width: 95%;
             max-width: 1100px; 
-            max-height: 90vh;
-            padding: 30px 30px;
+            height: 95vh;
+            max-height: 95vh;
+            padding: 20px 25px;
             display: flex;
             flex-direction: column;
             align-items: center;
             position: relative;
             box-sizing: border-box;
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            overflow-x: hidden;
-            overflow-y: auto;
+            overflow: hidden;
             transition: all 0.4s ease;
         }
 
@@ -159,37 +176,106 @@
             transform: scale(1.05);
         }
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background: #151432;
-            border: 2px solid var(--gold);
-            min-width: 200px;
-            border-radius: 15px;
-            margin-top: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
-        }
-
-        .dropdown-content button {
-            width: 100%; padding: 18px 25px; background: none; border: none;
-            color: white; cursor: pointer; text-align: left;
-            font-weight: 800; text-transform: uppercase;
-            border-bottom: 1px solid rgba(241, 196, 15, 0.2);
-            transition: all 0.2s ease;
+        .menu-bar {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 400px;
+            background: rgba(10, 8, 25, 0.85);
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9), 0 0 80px rgba(241, 196, 15, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 30px 25px;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.3s ease;
+            z-index: 9999;
+            backdrop-filter: blur(20px);
+            opacity: 0;
             animation: hueShift 10s linear infinite;
         }
-        .dropdown-content button:hover { 
-            background: var(--gold); 
-            color: black;
-            box-shadow: inset 0 0 20px rgba(241, 196, 15, 0.5);
+
+        .menu-bar::before {
+            content: none;
         }
-        .show { display: block; }
+
+        .menu-bar.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .menu-bar button {
+            width: 100%;
+            max-width: 320px;
+            padding: 15px 25px;
+            background: rgba(241, 196, 15, 0.1);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-weight: 800;
+            text-transform: uppercase;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-size: 1.1rem;
+            animation: hueShift 10s linear infinite;
+        }
+
+        .menu-bar button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--gold);
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+            z-index: -1;
+        }
+
+        .menu-bar button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .menu-bar button:hover {
+            color: white;
+            background: rgba(241, 196, 15, 0.3);
+            box-shadow: 0 0 25px var(--gold-glow), 0 0 40px var(--gold-glow), 0 0 60px rgba(241, 196, 15, 0.4);
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            z-index: 9998;
+            backdrop-filter: blur(5px);
+        }
+
+        .menu-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
 
         /* Game Area Spacing */
         #game-area {
             width: 100%;
-            height: 280px;
+            height: 220px;
             display: flex;
             justify-content: space-evenly; 
             align-items: flex-end; 
@@ -220,7 +306,7 @@
             position: relative;
             /* Base rim effect from image */
             box-shadow: 0 4px 0px -2px rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
+            transition: transform 0s, box-shadow 0.3s ease, border 0.3s ease;
         }
 
         .cup:hover {
@@ -256,8 +342,24 @@
             z-index: 1;
         }
 
-        .lift { transform: translateY(-200px); }
-        .visible { opacity: 1; }
+        .lift { 
+            transform: translateY(-200px) !important; 
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            animation-delay: 0s !important;
+        }
+        .lift-high { 
+            transform: translateY(-250px) !important; 
+            transition: transform 0.6s ease-out !important; 
+            animation-delay: 0s !important;
+        }
+        .slam { 
+            transform: translateY(0) !important; 
+            transition: transform 0.15s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important; 
+        }
+        .visible { 
+            opacity: 1; 
+            transition: opacity 0.3s ease;
+        }
 
         /* Buttons */
         .btn-gold {
@@ -265,14 +367,14 @@
             color: #000;
             border: none;
             border-radius: 15px;
-            padding: 12px 35px;
-            font-size: 1rem;
+            padding: 10px 30px;
+            font-size: 0.95rem;
             font-weight: 900;
             text-transform: uppercase;
             cursor: pointer;
             box-shadow: 0 0 15px var(--gold-glow);
-            margin: 6px;
-            width: 280px;
+            margin: 5px;
+            width: 260px;
             transition: all 0.3s ease;
             animation: hueShift 10s linear infinite;
         }
@@ -345,10 +447,25 @@
             transform: scale(1.1);
         }
 
-        .screen { display: none; flex-direction: column; align-items: center; width: 100%; }
+        .screen { 
+            display: none; 
+            flex-direction: column; 
+            align-items: center; 
+            width: 100%; 
+            height: 100%;
+            justify-content: center;
+            overflow: hidden;
+        }
         .active { display: flex; }
         
-        .label-header { color: var(--gold); letter-spacing: 2px; margin-bottom: 15px; font-size: 1.5rem; font-weight: bold; animation: hueShift 10s linear infinite; }
+        .label-header { 
+            color: var(--gold); 
+            letter-spacing: 2px; 
+            margin-bottom: 10px; 
+            font-size: 1.3rem; 
+            font-weight: bold; 
+            animation: hueShift 10s linear infinite; 
+        }
         
         .multiplayer-scores {
             display: flex;
@@ -386,12 +503,17 @@
             transform: scale(1.15);
         }
 
-        .game-dashboard { display: flex; flex-direction: column; align-items: center; margin-top: 10px; }
+        .game-dashboard { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            margin-top: 8px; 
+        }
         .gemini-box { 
             border: 2px solid var(--magic-purple); 
-            padding: 12px 25px; 
+            padding: 8px 20px; 
             border-radius: 10px; 
-            margin-top: 15px;
+            margin-top: 10px;
             transition: all 0.3s ease;
             animation: hueShift 10s linear infinite;
         }
@@ -495,12 +617,13 @@
         <div id="game-screen" class="screen">
             <div class="top-nav">
                 <button class="menu-trigger" onclick="toggleMenu()">☰</button>
-                <div id="menuDropdown" class="dropdown-content">
-                    <button id="menu-main-action" onclick="handleMenuPause()">⏸️</button>
-                    <button onclick="toggleMenu()">▶️</button>
-                    <button onclick="resetBoard(true)">🔄</button>
-                    <button onclick="goHome()">🏠</button>
-                </div>
+            </div>
+            <div class="menu-overlay" id="menuOverlay"></div>
+            <div id="menuBar" class="menu-bar">
+                <button id="menu-pause-btn" onclick="handlePause()">⏸️ Pause</button>
+                <button id="menu-resume-btn" onclick="handleResume()" style="display: none;">▶️ Resume</button>
+                <button onclick="handleRestart()">🔄 Restart</button>
+                <button onclick="handleHome()">🏠 Home</button>
             </div>
 
             <div id="game-area"></div>
@@ -638,7 +761,7 @@
             
             // Game screen
             document.querySelector('.menu-trigger').textContent = t('menu');
-            const menuBtns = document.querySelectorAll('#menuDropdown button');
+            const menuBtns = document.querySelectorAll('#menuBar button');
             menuBtns[0].textContent = t('pause');
             menuBtns[1].textContent = t('resume');
             menuBtns[2].textContent = t('replay');
@@ -658,7 +781,10 @@
             document.getElementById(id).classList.add('active');
         }
 
-        function toggleMenu() { document.getElementById("menuDropdown").classList.toggle("show"); }
+        function toggleMenu() {
+            document.getElementById("menuBar").classList.toggle("show");
+            document.getElementById("menuOverlay").classList.toggle("show");
+        }
 
         function setPlayers(num) {
             state.playerCount = num;
@@ -739,28 +865,109 @@
             }
         }
 
-        function handleMenuPause() {
-            if (!state.gameActive) { playGame(); return; }
-            state.isPaused = !state.isPaused;
-            document.getElementById('menu-main-action').innerText = state.isPaused ? t('resume') : t('pause');
-            toggleMenu();
+        function handlePause() {
+            if (!state.gameActive) return;
+            state.isPaused = true;
+            document.getElementById('menu-pause-btn').style.display = 'none';
+            document.getElementById('menu-resume-btn').style.display = 'block';
+            // Keep menu open so user can resume
+        }
+
+        function handleResume() {
+            if (!state.gameActive) return;
+            state.isPaused = false;
+            document.getElementById('menu-pause-btn').style.display = 'block';
+            document.getElementById('menu-resume-btn').style.display = 'none';
+            toggleMenu(); // Close menu when resuming
+        }
+
+        function handleRestart() {
+            // Instant reset - close menu and reset everything immediately
+            const menuBar = document.getElementById("menuBar");
+            const menuOverlay = document.getElementById("menuOverlay");
+            menuBar.classList.remove("show");
+            menuOverlay.classList.remove("show");
+            
+            // Reset pause button state
+            document.getElementById('menu-pause-btn').style.display = 'block';
+            document.getElementById('menu-resume-btn').style.display = 'none';
+            
+            // Instant reset
+            state.gameActive = false;
+            state.isPaused = false;
+            state.isBusy = false;
+            state.scores = [0,0,0,0];
+            state.currentPlayer = 0;
+            state.mapping = Array.from({length: state.numCups}, (_, i) => i);
+            
+            // Reset UI instantly
+            updateScoreUI();
+            document.querySelectorAll('.cup-slot').forEach(el => el.style.transform = `translateX(0px)`);
+            document.querySelectorAll('.cup').forEach(c => {
+                c.classList.remove('lift');
+                c.classList.remove('lift-high');
+            });
+            const ball = document.getElementById('ball');
+            if (ball) ball.classList.remove('visible');
+            document.getElementById('footer-start-btn').style.display = 'block';
+            document.getElementById('gemini-msg').innerText = t('turnWatch', {n: 1});
+        }
+
+        function handleHome() {
+            // Close menu first
+            const menuBar = document.getElementById("menuBar");
+            const menuOverlay = document.getElementById("menuOverlay");
+            menuBar.classList.remove("show");
+            menuOverlay.classList.remove("show");
+            
+            // Reset everything and go home
+            state.gameActive = false;
+            state.isPaused = false;
+            state.isBusy = false;
+            state.difficulty = null;
+            state.difficultySelected = false;
+            state.scores = [0,0,0,0];
+            state.currentPlayer = 0;
+            
+            // Reset pause button state
+            document.getElementById('menu-pause-btn').style.display = 'block';
+            document.getElementById('menu-resume-btn').style.display = 'none';
+            
+            showScreen('splash-screen');
         }
 
         function resetBoard(hardReset = false) {
-            state.gameActive = false; state.isPaused = false;
-            document.getElementById('menu-main-action').innerText = t('pause');
+            state.gameActive = false;
+            state.isPaused = false;
+            state.isBusy = false;
             state.mapping = Array.from({length: state.numCups}, (_, i) => i);
+            
+            // Reset pause button state
+            document.getElementById('menu-pause-btn').style.display = 'block';
+            document.getElementById('menu-resume-btn').style.display = 'none';
+            
             if(hardReset) { 
-                state.scores = [0,0,0,0]; state.currentPlayer = 0; 
+                state.scores = [0,0,0,0];
+                state.currentPlayer = 0; 
                 updateScoreUI();
                 document.getElementById('gemini-msg').innerText = t('turnWatch', {n: 1});
             }
+            
             document.querySelectorAll('.cup-slot').forEach(el => el.style.transform = `translateX(0px)`);
-            document.querySelectorAll('.cup').forEach(c => c.classList.remove('lift'));
-            document.getElementById('ball').classList.remove('visible');
+            document.querySelectorAll('.cup').forEach(c => {
+                c.classList.remove('lift');
+                c.classList.remove('lift-high');
+            });
+            const ball = document.getElementById('ball');
+            if (ball) ball.classList.remove('visible');
             document.getElementById('footer-start-btn').style.display = 'block';
-            state.isBusy = false;
-            const d = document.getElementById("menuDropdown"); if (d.classList.contains("show")) d.classList.remove("show");
+            
+            const menuBar = document.getElementById("menuBar");
+            const menuOverlay = document.getElementById("menuOverlay");
+            if (menuBar && menuBar.classList.contains("show")) {
+                menuBar.classList.remove("show");
+                menuOverlay.classList.remove("show");
+            }
         }
 
         function goHome() { 
@@ -778,12 +985,24 @@
             
             const ball = document.getElementById('ball');
             const cups = document.querySelectorAll('.cup');
+            const ballCupIndex = state.mapping.indexOf(0);
+            const ballCup = cups[ballCupIndex];
             
-            cups.forEach(c => c.classList.add('lift')); ball.classList.add('visible');
-            await new Promise(r => setTimeout(r, 1000));
-            cups.forEach(c => c.classList.remove('lift'));
+            // Step 1: Show ball clearly
+            ball.classList.add('visible');
+            await new Promise(r => setTimeout(r, 800));
+            
+            // Step 2: Lift the cup with the ball very high
+            ballCup.classList.add('lift-high');
+            await new Promise(r => setTimeout(r, 1200));
+            
+            // Step 3: Put it back down normally
+            ballCup.classList.remove('lift-high');
             await new Promise(r => setTimeout(r, 600));
+            
+            // Step 4: Hide ball
             ball.classList.remove('visible');
+            await new Promise(r => setTimeout(r, 400));
 
             // Get difficulty settings
             const settings = difficultySettings[state.difficulty] || difficultySettings.medium;
@@ -949,18 +1168,6 @@
                     resetBoard(false); 
                     document.getElementById('gemini-msg').innerText = t('ready', {n: state.currentPlayer + 1});
                 }, 2000);
-            }
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.matches('.menu-trigger')) {
-                const dropdowns = document.getElementsByClassName("dropdown-content");
-                for (let i = 0; i < dropdowns.length; i++) {
-                    let openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
             }
         }
     </script>
