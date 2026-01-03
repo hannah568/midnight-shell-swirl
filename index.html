@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mystic Shell Shuffle</title>
+    <title>MIDNIGHT SHELL SWIRL</title>
     <style>
         :root {
             --gold: #f1c40f;
@@ -11,6 +11,54 @@
             --magic-purple: #8e44ad;
             --bg-dark: #050410;
             --dynamic-hue: 0deg;
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+            --fever-color: #f1c40f;
+        }
+
+        /* Fever Mode Animations */
+        @keyframes feverGlow {
+            0%, 100% { box-shadow: 0 0 20px var(--fever-color), 0 0 40px var(--fever-color), 0 0 60px var(--fever-color); }
+            50% { box-shadow: 0 0 40px var(--fever-color), 0 0 80px var(--fever-color), 0 0 120px var(--fever-color); }
+        }
+
+        @keyframes sparkle {
+            0% { opacity: 0; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
+            100% { opacity: 0; transform: scale(0) rotate(360deg); }
+        }
+
+        @keyframes trailEffect {
+            0% { opacity: 0.8; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-50px) scale(0.5); }
+        }
+
+        .fever-mode {
+            animation: feverGlow 1s ease-in-out infinite !important;
+            border-color: var(--fever-color) !important;
+            filter: brightness(1.3) !important;
+        }
+
+        .fever-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--fever-color);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkle 0.6s ease-out forwards;
+            z-index: 100;
+        }
+
+        .cup-trail {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            background: radial-gradient(circle, var(--fever-color) 0%, transparent 70%);
+            opacity: 0;
+            pointer-events: none;
+            animation: trailEffect 0.5s ease-out forwards;
         }
 
         @keyframes rotateGlow {
@@ -36,6 +84,36 @@
             90% { transform: translate(-2px, 1px); }
         }
 
+        @keyframes slideInFromLeft {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutToLeft {
+            0% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+
+        .slide-in {
+            animation: slideInFromLeft 0.6s ease-out;
+        }
+
+        .slide-out {
+            animation: slideOutToLeft 0.5s ease-in;
+        }
+
         .screen-shake {
             animation: screenShake 0.5s ease-in-out;
         }
@@ -57,49 +135,50 @@
         .snowflake {
             position: fixed;
             top: -10px;
-            z-index: 9999;
+            z-index: 1;
             color: white;
-            font-size: 1em;
-            opacity: 0.8;
+            font-size: 1.8em;
+            opacity: 0.7;
             pointer-events: none;
             animation: fall linear infinite;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
         }
 
         @keyframes fall {
             0% {
                 top: -10%;
-                opacity: 0.8;
+                opacity: 0.7;
             }
             100% {
-                top: 100%;
+                top: 110%;
                 opacity: 0;
             }
         }
 
-        .snowflake:nth-child(1) { left: 10%; animation-duration: 10s; animation-delay: 0s; }
-        .snowflake:nth-child(2) { left: 20%; animation-duration: 12s; animation-delay: 2s; }
-        .snowflake:nth-child(3) { left: 30%; animation-duration: 8s; animation-delay: 4s; }
-        .snowflake:nth-child(4) { left: 40%; animation-duration: 14s; animation-delay: 1s; }
-        .snowflake:nth-child(5) { left: 50%; animation-duration: 11s; animation-delay: 3s; }
-        .snowflake:nth-child(6) { left: 60%; animation-duration: 9s; animation-delay: 5s; }
-        .snowflake:nth-child(7) { left: 70%; animation-duration: 13s; animation-delay: 2.5s; }
-        .snowflake:nth-child(8) { left: 80%; animation-duration: 10.5s; animation-delay: 4.5s; }
-        .snowflake:nth-child(9) { left: 90%; animation-duration: 12.5s; animation-delay: 1.5s; }
-        .snowflake:nth-child(10) { left: 15%; animation-duration: 11.5s; animation-delay: 3.5s; }
-        .snowflake:nth-child(11) { left: 25%; animation-duration: 9.5s; animation-delay: 0.5s; }
-        .snowflake:nth-child(12) { left: 35%; animation-duration: 13.5s; animation-delay: 2.8s; }
-        .snowflake:nth-child(13) { left: 45%; animation-duration: 10.8s; animation-delay: 4.2s; }
-        .snowflake:nth-child(14) { left: 55%; animation-duration: 12.2s; animation-delay: 1.8s; }
-        .snowflake:nth-child(15) { left: 65%; animation-duration: 8.5s; animation-delay: 3.2s; }
-        .snowflake:nth-child(16) { left: 75%; animation-duration: 14.5s; animation-delay: 5.5s; }
-        .snowflake:nth-child(17) { left: 85%; animation-duration: 11.2s; animation-delay: 0.8s; }
-        .snowflake:nth-child(18) { left: 95%; animation-duration: 9.8s; animation-delay: 4.8s; }
-        .snowflake:nth-child(19) { left: 5%; animation-duration: 13.2s; animation-delay: 2.2s; }
-        .snowflake:nth-child(20) { left: 22%; animation-duration: 10.2s; animation-delay: 3.8s; }
+        .snowflake:nth-child(1) { left: 10%; animation-duration: 10s; animation-delay: 0s; font-size: 1.6em; }
+        .snowflake:nth-child(2) { left: 20%; animation-duration: 12s; animation-delay: 2s; font-size: 2em; }
+        .snowflake:nth-child(3) { left: 30%; animation-duration: 8s; animation-delay: 4s; font-size: 1.5em; }
+        .snowflake:nth-child(4) { left: 40%; animation-duration: 14s; animation-delay: 1s; font-size: 2.2em; }
+        .snowflake:nth-child(5) { left: 50%; animation-duration: 11s; animation-delay: 3s; font-size: 1.7em; }
+        .snowflake:nth-child(6) { left: 60%; animation-duration: 9s; animation-delay: 5s; font-size: 1.9em; }
+        .snowflake:nth-child(7) { left: 70%; animation-duration: 13s; animation-delay: 2.5s; font-size: 1.6em; }
+        .snowflake:nth-child(8) { left: 80%; animation-duration: 10.5s; animation-delay: 4.5s; font-size: 2.1em; }
+        .snowflake:nth-child(9) { left: 90%; animation-duration: 12.5s; animation-delay: 1.5s; font-size: 1.8em; }
+        .snowflake:nth-child(10) { left: 15%; animation-duration: 11.5s; animation-delay: 3.5s; font-size: 1.7em; }
+        .snowflake:nth-child(11) { left: 25%; animation-duration: 9.5s; animation-delay: 0.5s; font-size: 2em; }
+        .snowflake:nth-child(12) { left: 35%; animation-duration: 13.5s; animation-delay: 2.8s; font-size: 1.5em; }
+        .snowflake:nth-child(13) { left: 45%; animation-duration: 10.8s; animation-delay: 4.2s; font-size: 1.9em; }
+        .snowflake:nth-child(14) { left: 55%; animation-duration: 12.2s; animation-delay: 1.8s; font-size: 2.2em; }
+        .snowflake:nth-child(15) { left: 65%; animation-duration: 8.5s; animation-delay: 3.2s; font-size: 1.6em; }
+        .snowflake:nth-child(16) { left: 75%; animation-duration: 14.5s; animation-delay: 5.5s; font-size: 2em; }
+        .snowflake:nth-child(17) { left: 85%; animation-duration: 11.2s; animation-delay: 0.8s; font-size: 1.7em; }
+        .snowflake:nth-child(18) { left: 95%; animation-duration: 9.8s; animation-delay: 4.8s; font-size: 1.8em; }
+        .snowflake:nth-child(19) { left: 5%; animation-duration: 13.2s; animation-delay: 2.2s; font-size: 2.1em; }
+        .snowflake:nth-child(20) { left: 22%; animation-duration: 10.2s; animation-delay: 3.8s; font-size: 1.5em; }
 
         .main-card {
             background: rgba(15, 12, 41, 0.95);
-            border: 2px solid var(--gold);
+            border: 2px solid hsl(var(--dynamic-hue), 80%, 60%);
             border-radius: 30px;
             width: 95%;
             max-width: 1100px; 
@@ -111,9 +190,9 @@
             align-items: center;
             position: relative;
             box-sizing: border-box;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            box-shadow: 0 0 50px rgba(0,0,0,0.8), 0 0 30px hsla(var(--dynamic-hue), 80%, 60%, 0.4);
             overflow: hidden;
-            transition: all 0.4s ease;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
 
         .main-card::before {
@@ -150,8 +229,8 @@
         }
 
         .main-card:hover {
-            box-shadow: 0 0 60px rgba(241, 196, 15, 0.3), 0 0 100px rgba(241, 196, 15, 0.2);
-            border-color: #f9d849;
+            box-shadow: 0 0 60px hsla(var(--dynamic-hue), 80%, 60%, 0.4), 0 0 100px hsla(var(--dynamic-hue), 80%, 60%, 0.3);
+            border-color: hsl(var(--dynamic-hue), 90%, 70%);
         }
 
         /* Menu UI */
@@ -569,7 +648,7 @@
 
     <div class="main-card">
         <div id="splash-screen" class="screen active" style="justify-content: center; height: 100%;">
-            <h1 style="font-size: 2.5rem; text-align: center; margin-bottom: 25px; background: linear-gradient(90deg, #ff0000, #ff7700, #ffff00, #00ff00, #0099ff, #9933ff, #ff0000); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: hueShift 10s linear infinite;">MYSTIC SHELL SHUFFLE</h1>
+            <h1 style="font-size: 2.5rem; text-align: center; margin-bottom: 25px; background: linear-gradient(90deg, #ff0000, #ff7700, #ffff00, #00ff00, #0099ff, #9933ff, #ff0000); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: hueShift 10s linear infinite;">MIDNIGHT SHELL SWIRL</h1>
             <button class="btn-gold" onclick="showScreen('lang-screen')">ENTER THE GAME</button>
             <div class="credits">
                 Developed by <span>白漢娜 - HANNAH KEZIA BARGAMENTO</span>
@@ -629,6 +708,7 @@
             <div id="game-area"></div>
 
             <button id="footer-start-btn" class="btn-gold" onclick="playGame()">START SHUFFLE</button>
+            <button id="footer-restart-btn" class="btn-gold" onclick="restartAfterFail()" style="display: none;">RESTART</button>
 
             <div class="game-dashboard">
                 <div id="player-indicators" class="multiplayer-scores"></div>
@@ -639,12 +719,62 @@
     </div>
 
     <script>
+        // Track mouse movement for dynamic color changes
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            const hue = Math.floor((x * 360 + y * 180) % 360);
+            document.documentElement.style.setProperty('--dynamic-hue', hue + 'deg');
+            document.documentElement.style.setProperty('--mouse-x', (x * 100) + '%');
+            document.documentElement.style.setProperty('--mouse-y', (y * 100) + '%');
+        });
+
         let state = { 
             mapping: [], isBusy: false, isPaused: false,
             playerCount: 1, currentPlayer: 0, scores: [0,0,0,0],
             numCups: 3, difficulty: null, gameActive: false,
-            language: 'en', difficultySelected: false
+            language: 'en', difficultySelected: false,
+            // Fever Mode tracking
+            consecutiveWins: 0, feverMode: false, scoreMultiplier: 1
         };
+
+        // Fever Mode Functions
+        function activateFeverMode() {
+            state.feverMode = true;
+            state.scoreMultiplier = 2;
+            const feverColors = ['#FFD700', '#00FFFF', '#FF1493']; // Gold, Cyan, Hot Pink
+            const feverColor = feverColors[Math.floor(Math.random() * feverColors.length)];
+            document.documentElement.style.setProperty('--fever-color', feverColor);
+            document.querySelector('.main-card').classList.add('fever-mode');
+            document.getElementById('gemini-msg').innerText = '🔥 FEVER MODE! DOUBLE POINTS! 🔥';
+        }
+
+        function deactivateFeverMode() {
+            state.feverMode = false;
+            state.scoreMultiplier = 1;
+            document.querySelector('.main-card').classList.remove('fever-mode');
+        }
+
+        function createFeverParticles(element) {
+            if (!state.feverMode) return;
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'fever-particle';
+                const rect = element.getBoundingClientRect();
+                particle.style.left = (rect.left + Math.random() * rect.width) + 'px';
+                particle.style.top = (rect.top + Math.random() * rect.height) + 'px';
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 600);
+            }
+        }
+
+        function addCupTrail(cupElement) {
+            if (!state.feverMode) return;
+            const trail = document.createElement('div');
+            trail.className = 'cup-trail';
+            cupElement.appendChild(trail);
+            setTimeout(() => trail.remove(), 500);
+        }
 
         const difficultySettings = {
             easy: { rounds: 8, interval: 700, complexChance: 0, ballChance: 0.3, label: 'Easy', desc: 'Slow Speed' },
@@ -655,7 +785,7 @@
 
         const translations = {
             en: {
-                title: 'MYSTIC SHELL SHUFFLE',
+                title: 'MIDNIGHT SHELL SWIRL',
                 enterGame: 'ENTER THE GAME',
                 language: 'LANGUAGE',
                 english: 'ENGLISH',
@@ -683,7 +813,8 @@
                 pickCup: 'P{n}, pick your cup!',
                 gotIt: 'P{n} Got it!',
                 missed: 'P{n} Missed!',
-                ready: "P{n}'s turn. Ready?"
+                ready: "P{n}'s turn. Ready?",
+                restart: 'RESTART'
             },
             zh: {
                 title: '神秘貝殼洗牌',
@@ -714,7 +845,8 @@
                 pickCup: 'P{n}，選擇你的杯子！',
                 gotIt: 'P{n} 猜對了！',
                 missed: 'P{n} 猜錯了！',
-                ready: 'P{n} 的回合。準備好了嗎？'
+                ready: 'P{n} 的回合。準備好了嗎？',
+                restart: '重新開始'
             }
         };
 
@@ -768,6 +900,7 @@
             menuBtns[3].textContent = t('home');
             
             document.querySelector('#footer-start-btn').textContent = t('startShuffle');
+            document.querySelector('#footer-restart-btn').textContent = t('restart');
             document.querySelector('#gemini-msg').textContent = t('focusMind');
             
             // Back buttons
@@ -936,7 +1069,7 @@
             showScreen('splash-screen');
         }
 
-        function resetBoard(hardReset = false) {
+        function resetBoard(hardReset = false, showStartButton = true) {
             state.gameActive = false;
             state.isPaused = false;
             state.isBusy = false;
@@ -960,7 +1093,13 @@
             });
             const ball = document.getElementById('ball');
             if (ball) ball.classList.remove('visible');
-            document.getElementById('footer-start-btn').style.display = 'block';
+            
+            // Only show start button if explicitly requested (e.g., after game over)
+            if (showStartButton) {
+                document.getElementById('footer-start-btn').style.display = 'block';
+            } else {
+                document.getElementById('footer-start-btn').style.display = 'none';
+            }
             
             const menuBar = document.getElementById("menuBar");
             const menuOverlay = document.getElementById("menuOverlay");
@@ -1079,6 +1218,12 @@
             elA.style.transform = `translateX(${matA.m41 + dist}px)`; 
             elB.style.transform = `translateX(${matB.m41 - dist}px)`;
             
+            // Add trail effects during Fever Mode
+            if (state.feverMode) {
+                addCupTrail(elA.querySelector('.cup') || elA);
+                addCupTrail(elB.querySelector('.cup') || elB);
+            }
+            
             state.mapping[pA] = idB; state.mapping[pB] = idA;
 
             await new Promise(r => setTimeout(r, interval));
@@ -1141,9 +1286,25 @@
             document.getElementById('ball').classList.add('visible');
             
             if(idx === 0) {
-                // Correct guess - award point and move to next player
-                state.scores[state.currentPlayer]++;
-                document.getElementById('gemini-msg').innerText = t('gotIt', {n: state.currentPlayer + 1});
+                // Correct guess - award point and continue playing
+                state.consecutiveWins++;
+                
+                // Fever Mode: Activate after 5 consecutive wins
+                if (state.consecutiveWins === 5 && !state.feverMode) {
+                    activateFeverMode();
+                }
+                
+                // Apply score multiplier for Fever Mode
+                state.scores[state.currentPlayer] += state.scoreMultiplier;
+                
+                // Create fever particles on success
+                if (state.feverMode) {
+                    createFeverParticles(document.querySelector('.main-card'));
+                }
+                
+                document.getElementById('gemini-msg').innerText = state.feverMode ? 
+                    `🔥 ${t('gotIt', {n: state.currentPlayer + 1})} +${state.scoreMultiplier} POINTS! 🔥` : 
+                    t('gotIt', {n: state.currentPlayer + 1});
                 
                 // Move to next player in multiplayer mode
                 if(state.playerCount > 1) {
@@ -1152,23 +1313,73 @@
                 
                 setTimeout(() => { 
                     updateScoreUI();
-                    resetBoard(false);
-                    // Auto-start next shuffle for next player
+                    resetBoard(false, false); // Don't show start button during continuous play
+                    // Auto-start next shuffle to keep game continuous on correct guess
                     setTimeout(() => {
                         playGame();
                     }, 800);
                 }, 1500);
             } else {
-                // Incorrect guess - move to next player
+                // Incorrect guess - show restart button
                 document.getElementById('gemini-msg').innerText = t('missed', {n: state.currentPlayer + 1});
-                state.currentPlayer = (state.currentPlayer + 1) % state.playerCount;
+                
+                // Fever Mode: Reset on failure (devastating!)
+                state.consecutiveWins = 0;
+                if (state.feverMode) {
+                    deactivateFeverMode();
+                }
                 
                 setTimeout(() => { 
+                    // Reset to first player and clear scores
+                    state.scores = [0,0,0,0];
+                    state.currentPlayer = 0;
                     updateScoreUI();
-                    resetBoard(false); 
-                    document.getElementById('gemini-msg').innerText = t('ready', {n: state.currentPlayer + 1});
+                    resetBoard(false, false); // Don't show start button yet
+                    // Show restart button instead
+                    document.getElementById('footer-restart-btn').style.display = 'block';
+                    document.getElementById('gemini-msg').innerText = 'Game Over! Click Restart to try again.';
                 }, 2000);
             }
+        }
+
+        function restartAfterFail() {
+            const restartBtn = document.getElementById('footer-restart-btn');
+            const startBtn = document.getElementById('footer-start-btn');
+            const gameArea = document.getElementById('game-area');
+            const gameDashboard = document.querySelector('.game-dashboard');
+            
+            // Add slide-out effect to game area and dashboard
+            gameArea.classList.add('slide-out');
+            gameDashboard.classList.add('slide-out');
+            restartBtn.style.opacity = '0';
+            restartBtn.style.transition = 'opacity 0.3s ease';
+            
+            setTimeout(() => {
+                // Remove slide-out and reset
+                gameArea.classList.remove('slide-out');
+                gameDashboard.classList.remove('slide-out');
+                
+                restartBtn.style.display = 'none';
+                restartBtn.style.opacity = '1';
+                restartBtn.style.transition = '';
+                
+                // Slide in the game area and dashboard from the left
+                gameArea.classList.add('slide-in');
+                gameDashboard.classList.add('slide-in');
+                
+                // Show start shuffle button with sliding effect
+                startBtn.style.display = 'block';
+                startBtn.classList.add('slide-in');
+                
+                // Remove animation classes after they complete
+                setTimeout(() => {
+                    startBtn.classList.remove('slide-in');
+                    gameArea.classList.remove('slide-in');
+                    gameDashboard.classList.remove('slide-in');
+                }, 600);
+                
+                document.getElementById('gemini-msg').innerText = t('ready', {n: 1});
+            }, 500);
         }
     </script>
 </body>
