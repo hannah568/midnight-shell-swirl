@@ -106,12 +106,72 @@
             }
         }
 
+        @keyframes slideInCenter {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutCenter {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        @keyframes zoomInCenter {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomOutCenter {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+        }
+
         .slide-in {
             animation: slideInFromLeft 0.6s ease-out;
         }
 
         .slide-out {
             animation: slideOutToLeft 0.5s ease-in;
+        }
+
+        .slide-in-center {
+            animation: slideInCenter 0.4s ease-out forwards;
+        }
+
+        .slide-out-center {
+            animation: slideOutCenter 0.3s ease-in forwards;
+        }
+
+        .zoom-in-center {
+            animation: zoomInCenter 0.4s ease-out forwards;
+        }
+
+        .zoom-out-center {
+            animation: zoomOutCenter 0.3s ease-in forwards;
         }
 
         .screen-shake {
@@ -137,17 +197,17 @@
             top: -10px;
             z-index: 1;
             color: white;
-            font-size: 1.8em;
-            opacity: 0.7;
+            font-size: 1.2em;
+            opacity: 0.4;
             pointer-events: none;
             animation: fall linear infinite;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.4);
         }
 
         @keyframes fall {
             0% {
                 top: -10%;
-                opacity: 0.7;
+                opacity: 0.5;
             }
             100% {
                 top: 110%;
@@ -155,26 +215,26 @@
             }
         }
 
-        .snowflake:nth-child(1) { left: 10%; animation-duration: 10s; animation-delay: 0s; font-size: 1.6em; }
-        .snowflake:nth-child(2) { left: 20%; animation-duration: 12s; animation-delay: 2s; font-size: 2em; }
-        .snowflake:nth-child(3) { left: 30%; animation-duration: 8s; animation-delay: 4s; font-size: 1.5em; }
-        .snowflake:nth-child(4) { left: 40%; animation-duration: 14s; animation-delay: 1s; font-size: 2.2em; }
-        .snowflake:nth-child(5) { left: 50%; animation-duration: 11s; animation-delay: 3s; font-size: 1.7em; }
-        .snowflake:nth-child(6) { left: 60%; animation-duration: 9s; animation-delay: 5s; font-size: 1.9em; }
-        .snowflake:nth-child(7) { left: 70%; animation-duration: 13s; animation-delay: 2.5s; font-size: 1.6em; }
-        .snowflake:nth-child(8) { left: 80%; animation-duration: 10.5s; animation-delay: 4.5s; font-size: 2.1em; }
-        .snowflake:nth-child(9) { left: 90%; animation-duration: 12.5s; animation-delay: 1.5s; font-size: 1.8em; }
-        .snowflake:nth-child(10) { left: 15%; animation-duration: 11.5s; animation-delay: 3.5s; font-size: 1.7em; }
-        .snowflake:nth-child(11) { left: 25%; animation-duration: 9.5s; animation-delay: 0.5s; font-size: 2em; }
-        .snowflake:nth-child(12) { left: 35%; animation-duration: 13.5s; animation-delay: 2.8s; font-size: 1.5em; }
-        .snowflake:nth-child(13) { left: 45%; animation-duration: 10.8s; animation-delay: 4.2s; font-size: 1.9em; }
-        .snowflake:nth-child(14) { left: 55%; animation-duration: 12.2s; animation-delay: 1.8s; font-size: 2.2em; }
-        .snowflake:nth-child(15) { left: 65%; animation-duration: 8.5s; animation-delay: 3.2s; font-size: 1.6em; }
-        .snowflake:nth-child(16) { left: 75%; animation-duration: 14.5s; animation-delay: 5.5s; font-size: 2em; }
-        .snowflake:nth-child(17) { left: 85%; animation-duration: 11.2s; animation-delay: 0.8s; font-size: 1.7em; }
-        .snowflake:nth-child(18) { left: 95%; animation-duration: 9.8s; animation-delay: 4.8s; font-size: 1.8em; }
-        .snowflake:nth-child(19) { left: 5%; animation-duration: 13.2s; animation-delay: 2.2s; font-size: 2.1em; }
-        .snowflake:nth-child(20) { left: 22%; animation-duration: 10.2s; animation-delay: 3.8s; font-size: 1.5em; }
+        .snowflake:nth-child(1) { left: 10%; animation-duration: 10s; animation-delay: 0s; font-size: 1em; }
+        .snowflake:nth-child(2) { left: 20%; animation-duration: 12s; animation-delay: 2s; font-size: 1.3em; }
+        .snowflake:nth-child(3) { left: 30%; animation-duration: 8s; animation-delay: 4s; font-size: 0.9em; }
+        .snowflake:nth-child(4) { left: 40%; animation-duration: 14s; animation-delay: 1s; font-size: 1.4em; }
+        .snowflake:nth-child(5) { left: 50%; animation-duration: 11s; animation-delay: 3s; font-size: 1.1em; }
+        .snowflake:nth-child(6) { left: 60%; animation-duration: 9s; animation-delay: 5s; font-size: 1.2em; }
+        .snowflake:nth-child(7) { left: 70%; animation-duration: 13s; animation-delay: 2.5s; font-size: 1em; }
+        .snowflake:nth-child(8) { left: 80%; animation-duration: 10.5s; animation-delay: 4.5s; font-size: 1.3em; }
+        .snowflake:nth-child(9) { left: 90%; animation-duration: 12.5s; animation-delay: 1.5s; font-size: 1.1em; }
+        .snowflake:nth-child(10) { left: 15%; animation-duration: 11.5s; animation-delay: 3.5s; font-size: 1.1em; }
+        .snowflake:nth-child(11) { left: 25%; animation-duration: 9.5s; animation-delay: 0.5s; font-size: 1.3em; }
+        .snowflake:nth-child(12) { left: 35%; animation-duration: 13.5s; animation-delay: 2.8s; font-size: 0.9em; }
+        .snowflake:nth-child(13) { left: 45%; animation-duration: 10.8s; animation-delay: 4.2s; font-size: 1.2em; }
+        .snowflake:nth-child(14) { left: 55%; animation-duration: 12.2s; animation-delay: 1.8s; font-size: 1.4em; }
+        .snowflake:nth-child(15) { left: 65%; animation-duration: 8.5s; animation-delay: 3.2s; font-size: 1em; }
+        .snowflake:nth-child(16) { left: 75%; animation-duration: 14.5s; animation-delay: 5.5s; font-size: 1.3em; }
+        .snowflake:nth-child(17) { left: 85%; animation-duration: 11.2s; animation-delay: 0.8s; font-size: 1.1em; }
+        .snowflake:nth-child(18) { left: 95%; animation-duration: 9.8s; animation-delay: 4.8s; font-size: 1.1em; }
+        .snowflake:nth-child(19) { left: 5%; animation-duration: 13.2s; animation-delay: 2.2s; font-size: 1.3em; }
+        .snowflake:nth-child(20) { left: 22%; animation-duration: 10.2s; animation-delay: 3.8s; font-size: 0.9em; }
 
         .main-card {
             background: rgba(15, 12, 41, 0.95);
@@ -236,23 +296,28 @@
         /* Menu UI */
         .top-nav { position: absolute; top: 25px; right: 25px; z-index: 1000; }
         .menu-trigger {
-            background: rgba(25, 20, 50, 0.8);
+            background: transparent;
             border: 2px solid var(--gold);
             color: var(--gold);
             z-index: 2;
-            padding: 12px 28px;
-            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             cursor: pointer;
             font-weight: 900;
-            text-transform: uppercase;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s ease;
             animation: hueShift 10s linear infinite;
         }
 
         .menu-trigger:hover {
-            background: rgba(241, 196, 15, 0.2);
+            background: rgba(241, 196, 15, 0.1);
             box-shadow: 0 0 20px var(--gold-glow), 0 0 35px var(--gold-glow);
-            transform: scale(1.05);
+            transform: scale(1.1);
+            border-color: var(--gold);
         }
 
         .menu-bar {
@@ -260,22 +325,17 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 400px;
-            background: rgba(10, 8, 25, 0.85);
+            background: transparent;
             border: none;
-            border-radius: 20px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.9), 0 0 80px rgba(241, 196, 15, 0.3);
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            padding: 30px 25px;
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.3s ease;
+            gap: 20px;
+            padding: 0;
+            transition: transform 0.4s ease-out, opacity 0.3s ease;
             z-index: 9999;
-            backdrop-filter: blur(20px);
             opacity: 0;
-            animation: hueShift 10s linear infinite;
         }
 
         .menu-bar::before {
@@ -287,22 +347,59 @@
             opacity: 1;
         }
 
+        .menu-bar.show button {
+            animation: slideInFromCenter 0.4s ease-out forwards;
+        }
+
+        .menu-bar.show button:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .menu-bar.show button:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .menu-bar.show button:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+        
+        .menu-bar.show button:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes slideInFromCenter {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
         .menu-bar button {
-            width: 100%;
-            max-width: 320px;
-            padding: 15px 25px;
-            background: rgba(241, 196, 15, 0.1);
-            border: none;
-            color: white;
+            width: 70px;
+            height: 70px;
+            padding: 0;
+            background: rgba(15, 12, 41, 0.85);
+            border: 2px solid var(--gold);
+            color: var(--gold);
             cursor: pointer;
             font-weight: 800;
-            text-transform: uppercase;
-            border-radius: 12px;
+            border-radius: 50%;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            font-size: 1.1rem;
-            animation: hueShift 10s linear infinite;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transform: scale(0);
+            opacity: 0;
         }
 
         .menu-bar button::before {
@@ -320,16 +417,16 @@
         }
 
         .menu-bar button:hover::before {
-            width: 300px;
-            height: 300px;
+            width: 100px;
+            height: 100px;
         }
 
         .menu-bar button:hover {
-            color: white;
-            background: rgba(241, 196, 15, 0.3);
-            box-shadow: 0 0 25px var(--gold-glow), 0 0 40px var(--gold-glow), 0 0 60px rgba(241, 196, 15, 0.4);
-            transform: scale(1.05);
-            filter: brightness(1.2);
+            color: #000;
+            background: rgba(241, 196, 15, 0.2);
+            box-shadow: 0 0 25px var(--gold-glow), 0 0 40px var(--gold-glow);
+            transform: scale(1.15);
+            border-color: var(--gold);
         }
 
         .menu-overlay {
@@ -354,12 +451,12 @@
         /* Game Area Spacing */
         #game-area {
             width: 100%;
-            height: 220px;
+            max-height: 100%;
             display: flex;
-            justify-content: space-evenly; 
-            align-items: flex-end; 
-            padding-bottom: 20px;
-            margin: 15px 0;
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px;
+            gap: 100px;
         }
 
         .cup-slot {
@@ -442,7 +539,9 @@
 
         /* Buttons */
         .btn-gold {
-            background-color: var(--gold);
+            background: linear-gradient(135deg, rgba(15, 52, 96, 0.4), rgba(15, 52, 96, 0.6)), var(--gold);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             color: #000;
             border: none;
             border-radius: 15px;
@@ -452,10 +551,14 @@
             text-transform: uppercase;
             cursor: pointer;
             box-shadow: 0 0 15px var(--gold-glow);
-            margin: 5px;
+            margin: 12px;
             width: 260px;
             transition: all 0.3s ease;
             animation: hueShift 10s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 48px;
         }
 
         .btn-gold:hover {
@@ -498,11 +601,15 @@
             border: 1px solid var(--gold);
             padding: 8px 20px;
             border-radius: 10px;
-            margin-top: 10px;
+            margin-top: 0;
             font-size: 0.9rem;
             text-align: center;
             background: rgba(241, 196, 15, 0.1);
             animation: hueShift 10s linear infinite;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .current-difficulty span {
@@ -514,9 +621,12 @@
         .back-btn {
             position: absolute; top: 25px; left: 25px;
             background: transparent; border: 1px solid var(--gold);
-            color: var(--gold); padding: 8px 20px; border-radius: 8px; cursor: pointer;
+            color: var(--gold); padding: 8px 20px; border-radius: 10px; cursor: pointer;
             transition: all 0.3s ease;
             animation: hueShift 10s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .back-btn:hover {
@@ -534,8 +644,50 @@
             height: 100%;
             justify-content: center;
             overflow: hidden;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
-        .active { display: flex; }
+        
+        .game-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            max-height: 100%;
+        }
+        
+        .game-area-container {
+            flex: 0 0 60%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .game-controls {
+            flex: 0 0 40%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-y: auto;
+            padding-top: 8px;
+            gap: 8px;
+        }
+        
+        .active { 
+            display: flex; 
+        }
+        
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            padding: 15px;
+        }
         
         .label-header { 
             color: var(--gold); 
@@ -548,8 +700,8 @@
         
         .multiplayer-scores {
             display: flex;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 0;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -557,11 +709,14 @@
         .p-score {
             border: 1px solid var(--gold);
             padding: 8px 15px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 0.9rem;
             opacity: 0.5;
             transition: all 0.3s ease;
             animation: hueShift 10s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .p-score:hover {
@@ -586,15 +741,258 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            margin-top: 8px; 
+            margin-top: 8px;
+            gap: 8px;
         }
+        
+        .score-difficulty-row {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+
+        /* Name Input Screen */
+        .name-input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 96%;
+            max-width: 700px;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .shared-avatar-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 600px;
+            align-items: center;
+        }
+
+        .all-players-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 600px;
+        }
+        
+        .player-back-plate {
+            background: rgba(15, 52, 96, 0.15);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(241, 196, 15, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .player-back-plate:hover {
+            background: rgba(15, 52, 96, 0.25);
+            border-color: rgba(241, 196, 15, 0.4);
+        }
+
+        .name-input-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+        }
+
+        .name-input-wrapper.completed {
+            border-color: #2ecc71;
+            background: rgba(46, 204, 113, 0.1);
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .name-input-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .name-input-field {
+            flex: 1;
+        }
+
+        .name-input-label {
+            color: var(--gold);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 10px 15px;
+            background: rgba(15, 12, 41, 0.8);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(241, 196, 15, 0.2);
+        }
+
+        .name-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px var(--gold-glow), 0 0 35px rgba(241, 196, 15, 0.3);
+            transform: scale(1.02);
+        }
+
+        .name-input.error {
+            border-color: #ff4444;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .name-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Avatar Selection */
+        .avatar-selection-area {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .avatar-categories {
+            display: flex;
+            flex-direction: row;
+            gap: 6px;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .category-btn {
+            padding: 7px 10px;
+            background: rgba(15, 12, 41, 0.8);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-btn:hover {
+            background: rgba(241, 196, 15, 0.1);
+            box-shadow: 0 0 15px var(--gold-glow);
+            transform: scale(1.05);
+        }
+
+        .category-btn.active {
+            background: rgba(241, 196, 15, 0.2);
+            box-shadow: 0 0 20px var(--gold-glow);
+            border-width: 3px;
+        }
+
+        .avatar-selector {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+            justify-items: center;
+            width: 100%;
+            max-width: 250px;
+        }
+
+        .avatar-selector.visible {
+            display: grid;
+        }
+
+        .shared-avatar-selector-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 600px;
+            align-items: center;
+        }
+
+        .avatar-option {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            background: rgba(15, 12, 41, 0.8);
+        }
+
+        .avatar-option:hover {
+            transform: scale(1.15);
+            border-color: var(--gold);
+            box-shadow: 0 0 15px var(--gold-glow);
+        }
+
+        .avatar-option.selected {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px var(--gold-glow);
+            transform: scale(1.2);
+        }
+
+        .avatar-display {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            background: rgba(15, 12, 41, 0.9);
+            box-shadow: 0 0 15px rgba(241, 196, 15, 0.3);
+            flex-shrink: 0;
+            transition: all 0.4s ease;
+        }
+
+        .avatar-display.completed {
+            border-color: #2ecc71;
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+        }
+
         .gemini-box { 
             border: 2px solid var(--magic-purple); 
             padding: 8px 20px; 
             border-radius: 10px; 
-            margin-top: 10px;
+            margin-top: 5px;
             transition: all 0.3s ease;
             animation: hueShift 10s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .gemini-box:hover {
@@ -658,17 +1056,30 @@
         <div id="lang-screen" class="screen">
             <button class="back-btn" onclick="showScreen('splash-screen')">«</button>
             <div class="label-header">LANGUAGE</div>
-            <button class="btn-gold" onclick="setLanguage('en')">ENGLISH</button>
-            <button class="btn-gold" onclick="setLanguage('zh')">繁體中文</button>
+            <div class="button-container">
+                <button class="btn-gold" onclick="setLanguage('en')">ENGLISH</button>
+                <button class="btn-gold" onclick="setLanguage('zh')">繁體中文</button>
+            </div>
         </div>
 
         <div id="player-screen" class="screen">
             <button class="back-btn" onclick="showScreen('lang-screen')">«</button>
             <div class="label-header">SELECT PLAYERS</div>
-            <button class="btn-gold" onclick="setPlayers(1)">SOLO (P1)</button>
-            <button class="btn-gold" onclick="setPlayers(2)">2 PLAYERS</button>
-            <button class="btn-gold" onclick="setPlayers(3)">3 PLAYERS</button>
-            <button class="btn-gold" onclick="setPlayers(4)">4 PLAYERS</button>
+            <div class="button-container">
+                <button class="btn-gold" onclick="setPlayers(1)">SOLO (P1)</button>
+                <button class="btn-gold" onclick="setPlayers(2)">2 PLAYERS</button>
+                <button class="btn-gold" onclick="setPlayers(3)">3 PLAYERS</button>
+                <button class="btn-gold" onclick="setPlayers(4)">4 PLAYERS</button>
+            </div>
+        </div>
+
+        <div id="name-screen" class="screen">
+            <button class="back-btn" onclick="showScreen('player-screen')">«</button>
+            <div class="label-header">WHO IS PLAYING</div>
+            <div class="name-input-container" id="nameInputContainer">
+                <!-- Name inputs will be dynamically added here -->
+            </div>
+            <button class="btn-gold" onclick="submitNames()" style="margin-top: 15px;">CONTINUE</button>
         </div>
 
         <div id="diff-screen" class="screen">
@@ -690,7 +1101,10 @@
                 EXTREME
                 <div class="difficulty-info">Very Fast</div>
             </button>
-            <button class="btn-gold" id="start-game-btn" onclick="initGame()" style="margin-top: 20px; display: none;">START GAME</button>
+            <button class="btn-gold diff-btn" data-difficulty="adaptive" onclick="selectDifficulty('adaptive')">
+                ADAPTIVE
+                <div class="difficulty-info">Adjusts to Your Skill</div>
+            </button>
         </div>
 
         <div id="game-screen" class="screen">
@@ -699,21 +1113,30 @@
             </div>
             <div class="menu-overlay" id="menuOverlay"></div>
             <div id="menuBar" class="menu-bar">
-                <button id="menu-pause-btn" onclick="handlePause()">⏸️ Pause</button>
-                <button id="menu-resume-btn" onclick="handleResume()" style="display: none;">▶️ Resume</button>
-                <button onclick="handleRestart()">🔄 Restart</button>
-                <button onclick="handleHome()">🏠 Home</button>
+                <button id="menu-pause-btn" onclick="handlePause()">⏸️</button>
+                <button id="menu-resume-btn" onclick="handleResume()" style="display: none;">▶️</button>
+                <button onclick="handleRestart()">🔄</button>
+                <button onclick="handleHome()">🏠</button>
             </div>
 
-            <div id="game-area"></div>
+            <div class="game-content">
+                <div class="game-area-container">
+                    <div id="game-area"></div>
+                </div>
 
-            <button id="footer-start-btn" class="btn-gold" onclick="playGame()">START SHUFFLE</button>
-            <button id="footer-restart-btn" class="btn-gold" onclick="restartAfterFail()" style="display: none;">RESTART</button>
+                <div class="game-controls">
+                    <button id="footer-start-btn" class="btn-gold" onclick="playGame()">START SHUFFLE</button>
+                    <button id="footer-restart-btn" class="btn-gold" onclick="restartAfterFail()" style="display: none;">RESTART</button>
 
-            <div class="game-dashboard">
-                <div id="player-indicators" class="multiplayer-scores"></div>
-                <div class="current-difficulty" id="diff-display"></div>
-                <div class="gemini-box">✨ ♊ <span id="gemini-msg">"Focus your mind."</span></div>
+                    <div class="game-dashboard">
+                        <div id="player-indicators" class="multiplayer-scores"></div>
+                        <div class="score-difficulty-row">
+                            <div id="streak-display" class="p-score streak-display"></div>
+                            <div class="current-difficulty" id="diff-display"></div>
+                        </div>
+                        <div class="gemini-box">✨ ♊ <span id="gemini-msg">"Focus your mind."</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -732,10 +1155,12 @@
         let state = { 
             mapping: [], isBusy: false, isPaused: false,
             playerCount: 1, currentPlayer: 0, scores: [0,0,0,0],
+            playerNames: ['Player 1', 'Player 2', 'Player 3', 'Player 4'],
+            playerAvatars: ['👤', '👥', '👶', '👨'],
             numCups: 3, difficulty: null, gameActive: false,
             language: 'en', difficultySelected: false,
             // Fever Mode tracking
-            consecutiveWins: 0, feverMode: false, scoreMultiplier: 1
+            consecutiveWins: 0, highestStreak: 0, feverMode: false, scoreMultiplier: 1
         };
 
         // Fever Mode Functions
@@ -780,7 +1205,8 @@
             easy: { rounds: 8, interval: 700, complexChance: 0, ballChance: 0.3, label: 'Easy', desc: 'Slow Speed' },
             medium: { rounds: 8, interval: 450, complexChance: 0.2, ballChance: 0.5, label: 'Medium', desc: 'Medium Speed' },
             hard: { rounds: 10, interval: 300, complexChance: 0.4, ballChance: 0.7, label: 'Hard', desc: 'Fast Speed' },
-            extreme: { rounds: 10, interval: 180, complexChance: 0.6, ballChance: 0.85, label: 'Extreme', desc: 'Very Fast' }
+            extreme: { rounds: 10, interval: 180, complexChance: 0.6, ballChance: 0.85, label: 'Extreme', desc: 'Very Fast' },
+            adaptive: { rounds: 8, interval: 500, complexChance: 0.3, ballChance: 0.5, label: 'Adaptive', desc: 'Adjusts to Your Skill' }
         };
 
         const translations = {
@@ -795,16 +1221,23 @@
                 players2: '2 PLAYERS',
                 players3: '3 PLAYERS',
                 players4: '4 PLAYERS',
+                enterNames: 'WHO IS PLAYING',
+                playerName: 'Player {n} Name',
+                playerPlaceholder: 'Player {n}',
+                playerDefault: 'Player {n}',
+                continue: 'CONTINUE',
                 difficulty: 'DIFFICULTY',
+                difficultyLabel: 'Difficulty',
                 easy: 'EASY',
                 medium: 'MEDIUM',
                 hard: 'HARD',
                 extreme: 'EXTREME',
+                adaptive: 'ADAPTIVE',
                 menu: '☰',
-                pause: '⏸️',
-                resume: '▶️',
-                replay: '🔄',
-                home: '🏠',
+                pause: '⏸️ Pause',
+                resume: '▶️ Resume',
+                replay: '🔄 Restart',
+                home: '🏠 Home',
                 startShuffle: 'START SHUFFLE',
                 focusMind: '"Focus your mind."',
                 back: '«',
@@ -814,7 +1247,13 @@
                 gotIt: 'P{n} Got it!',
                 missed: 'P{n} Missed!',
                 ready: "P{n}'s turn. Ready?",
-                restart: 'RESTART'
+                restart: 'RESTART',
+                avatarLabel: 'Avatar',
+                animals: 'Animals',
+                elements: 'Elements',
+                anime: 'Anime',
+                streak: 'Streak',
+                highestStreak: 'Best'
             },
             zh: {
                 title: '神秘貝殼洗牌',
@@ -827,16 +1266,23 @@
                 players2: '2位玩家',
                 players3: '3位玩家',
                 players4: '4位玩家',
+                enterNames: '誰在玩',
+                playerName: '玩家 {n} 名稱',
+                playerPlaceholder: '玩家 {n}',
+                playerDefault: '玩家 {n}',
+                continue: '繼續',
                 difficulty: '難度',
+                difficultyLabel: '難度',
                 easy: '簡單',
                 medium: '中等',
                 hard: '困難',
                 extreme: '極限',
+                adaptive: '自適應',
                 menu: '☰',
-                pause: '⏸️',
-                resume: '▶️',
-                replay: '🔄',
-                home: '🏠',
+                pause: '⏸️ 暫停',
+                resume: '▶️ 繼續',
+                replay: '🔄 重新開始',
+                home: '🏠 首頁',
                 startShuffle: '開始洗牌',
                 focusMind: '"集中你的心神。"',
                 back: '«',
@@ -846,7 +1292,13 @@
                 gotIt: 'P{n} 猜對了！',
                 missed: 'P{n} 猜錯了！',
                 ready: 'P{n} 的回合。準備好了嗎？',
-                restart: '重新開始'
+                restart: '重新開始',
+                avatarLabel: '頭像',
+                animals: '動物',
+                elements: '元素',
+                anime: '動漫',
+                streak: '連勝',
+                highestStreak: '最高'
             }
         };
 
@@ -882,7 +1334,17 @@
             playerBtns[1].textContent = t('players2');
             playerBtns[2].textContent = t('players3');
             playerBtns[3].textContent = t('players4');
-            
+
+            // Name screen
+            const nameScreenHeader = document.querySelector('#name-screen .label-header');
+            if (nameScreenHeader) nameScreenHeader.textContent = t('enterNames');
+            const nameLabels = document.querySelectorAll('.name-input-label');
+            nameLabels.forEach((label, i) => {
+                label.textContent = t('playerName', {n: i + 1});
+            });
+            const continueBtn = document.querySelector('#name-screen .btn-gold');
+            if (continueBtn) continueBtn.textContent = t('continue');
+
             // Difficulty screen
             document.querySelector('#diff-screen .label-header').textContent = t('difficulty');
             const diffBtns = document.querySelectorAll('#diff-screen .btn-gold');
@@ -890,14 +1352,15 @@
             diffBtns[1].textContent = t('medium');
             diffBtns[2].textContent = t('hard');
             diffBtns[3].textContent = t('extreme');
+            diffBtns[4].textContent = t('adaptive');
             
             // Game screen
             document.querySelector('.menu-trigger').textContent = t('menu');
             const menuBtns = document.querySelectorAll('#menuBar button');
-            menuBtns[0].textContent = t('pause');
-            menuBtns[1].textContent = t('resume');
-            menuBtns[2].textContent = t('replay');
-            menuBtns[3].textContent = t('home');
+            menuBtns[0].textContent = '⏸️';
+            menuBtns[1].textContent = '▶️';
+            menuBtns[2].textContent = '🔄';
+            menuBtns[3].textContent = '🏠';
             
             document.querySelector('#footer-start-btn').textContent = t('startShuffle');
             document.querySelector('#footer-restart-btn').textContent = t('restart');
@@ -910,8 +1373,32 @@
         }
 
         function showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            const currentScreen = document.querySelector('.screen.active');
+            const nextScreen = document.getElementById(id);
+            
+            if (currentScreen) {
+                // Add slide-out animation to current screen
+                currentScreen.classList.add('slide-out-center');
+                
+                setTimeout(() => {
+                    // Remove active class and animation class
+                    currentScreen.classList.remove('active', 'slide-out-center');
+                    
+                    // Show next screen with slide-in animation
+                    nextScreen.classList.add('active', 'slide-in-center');
+                    
+                    // Remove animation class after animation completes
+                    setTimeout(() => {
+                        nextScreen.classList.remove('slide-in-center');
+                    }, 700);
+                }, 500);
+            } else {
+                // First screen load, just show it
+                nextScreen.classList.add('active', 'slide-in-center');
+                setTimeout(() => {
+                    nextScreen.classList.remove('slide-in-center');
+                }, 700);
+            }
         }
 
         function toggleMenu() {
@@ -924,8 +1411,279 @@
             state.numCups = (num === 1) ? 3 : 4;
             state.difficultySelected = false;
             state.difficulty = null;
-            showScreen('diff-screen');
-            updateDifficultyButtons();
+            setupNameInputs();
+            showScreen('name-screen');
+        }
+
+        function setupNameInputs() {
+            const container = document.getElementById('nameInputContainer');
+            container.innerHTML = '';
+            
+            // Avatar sets by category
+            const avatarSets = {
+                animals: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮'],
+                elements: ['🔥', '💧', '🌊', '⚡', '💨', '🌪️', '❄️', '⭐', '🌟', '💎', '🌙', '☀️'],
+                anime: ['😀', '😎', '🤓', '😇', '🥳', '🤩', '😺', '🤖', '👾', '🎭', '🎪', '🎨']
+            };
+            
+            // TOP - Shared Avatar Category Buttons
+            const sharedAvatarSection = document.createElement('div');
+            sharedAvatarSection.className = 'shared-avatar-section';
+            
+            const avatarLabel = document.createElement('div');
+            avatarLabel.className = 'name-input-label';
+            avatarLabel.textContent = t('avatarLabel');
+            avatarLabel.style.textAlign = 'center';
+            avatarLabel.style.marginBottom = '5px';
+            
+            const categoriesDiv = document.createElement('div');
+            categoriesDiv.className = 'avatar-categories';
+            
+            const animalBtn = document.createElement('button');
+            animalBtn.className = 'category-btn';
+            animalBtn.textContent = t('animals');
+            animalBtn.onclick = () => switchAvatarCategoryForAll('animals', avatarSets, animalBtn);
+            
+            const elementsBtn = document.createElement('button');
+            elementsBtn.className = 'category-btn';
+            elementsBtn.textContent = t('elements');
+            elementsBtn.onclick = () => switchAvatarCategoryForAll('elements', avatarSets, elementsBtn);
+            
+            const animeBtn = document.createElement('button');
+            animeBtn.className = 'category-btn';
+            animeBtn.textContent = t('anime');
+            animeBtn.onclick = () => switchAvatarCategoryForAll('anime', avatarSets, animeBtn);
+            
+            categoriesDiv.appendChild(animalBtn);
+            categoriesDiv.appendChild(elementsBtn);
+            categoriesDiv.appendChild(animeBtn);
+            
+            sharedAvatarSection.appendChild(avatarLabel);
+            sharedAvatarSection.appendChild(categoriesDiv);
+            
+            // Create shared avatar selector container that appears below buttons
+            const sharedSelectorContainer = document.createElement('div');
+            sharedSelectorContainer.className = 'shared-avatar-selector-container';
+            sharedSelectorContainer.id = 'shared-avatar-selector';
+            sharedAvatarSection.appendChild(sharedSelectorContainer);
+            
+            // BOTTOM - All Players with back-plates
+            const allPlayersSection = document.createElement('div');
+            allPlayersSection.className = 'all-players-section';
+            
+            for (let i = 0; i < state.playerCount; i++) {
+                // Create back-plate for each player
+                const playerBackPlate = document.createElement('div');
+                playerBackPlate.className = 'player-back-plate';
+                
+                const playerRow = document.createElement('div');
+                playerRow.style.display = 'flex';
+                playerRow.style.gap = '15px';
+                playerRow.style.width = '100%';
+                playerRow.style.alignItems = 'flex-start';
+                
+                // Name Input
+                const nameSection = document.createElement('div');
+                nameSection.style.flex = '1';
+                nameSection.style.minWidth = '0';
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'name-input-wrapper';
+                
+                const label = document.createElement('div');
+                label.className = 'name-input-label';
+                label.textContent = t('playerName', {n: i + 1});
+                
+                const row = document.createElement('div');
+                row.className = 'name-input-row';
+                
+                const avatarDisplay = document.createElement('div');
+                avatarDisplay.className = 'avatar-display';
+                avatarDisplay.id = `avatar-display-${i}`;
+                avatarDisplay.textContent = '?';
+                
+                const inputField = document.createElement('div');
+                inputField.className = 'name-input-field';
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'name-input';
+                input.placeholder = t('playerPlaceholder', {n: i + 1});
+                input.value = '';
+                input.maxLength = 15;
+                input.id = `player-name-${i}`;
+                
+                // Add input listener to check completion
+                input.addEventListener('input', () => checkPlayerCompletion(i));
+                
+                inputField.appendChild(input);
+                row.appendChild(avatarDisplay);
+                row.appendChild(inputField);
+                
+                wrapper.appendChild(label);
+                wrapper.appendChild(row);
+                nameSection.appendChild(wrapper);
+                
+                playerRow.appendChild(nameSection);
+                playerBackPlate.appendChild(playerRow);
+                
+                allPlayersSection.appendChild(playerBackPlate);
+            }
+            
+            container.appendChild(sharedAvatarSection);
+            container.appendChild(allPlayersSection);
+        }
+
+        function populateAvatars(playerIndex, avatars, selectorElement) {
+            selectorElement.innerHTML = '';
+            
+            avatars.forEach(emoji => {
+                const option = document.createElement('div');
+                option.className = 'avatar-option';
+                if (emoji === state.playerAvatars[playerIndex]) {
+                    option.classList.add('selected');
+                }
+                option.textContent = emoji;
+                option.onclick = () => selectAvatar(playerIndex, emoji, option);
+                selectorElement.appendChild(option);
+            });
+        }
+
+        function switchAvatarCategoryForAll(category, avatarSets, clickedBtn) {
+            const categoriesDiv = clickedBtn.parentElement;
+            
+            // Remove active class from all category buttons
+            categoriesDiv.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to clicked button
+            clickedBtn.classList.add('active');
+            
+            // Get or create shared avatar selector
+            const sharedContainer = document.getElementById('shared-avatar-selector');
+            sharedContainer.innerHTML = '';
+            
+            // Create ONE set of avatar options for all players to choose from
+            const avatarSelector = document.createElement('div');
+            avatarSelector.className = 'avatar-selector visible';
+            
+            avatarSets[category].forEach(emoji => {
+                const option = document.createElement('div');
+                option.className = 'avatar-option';
+                option.textContent = emoji;
+                
+                // When clicked, find which player is currently selecting (or assign to next player without avatar)
+                option.onclick = () => {
+                    // Find the first player without an avatar selected
+                    let targetPlayer = -1;
+                    for (let i = 0; i < state.playerCount; i++) {
+                        const avatarDisplay = document.getElementById(`avatar-display-${i}`);
+                        if (avatarDisplay.textContent === '?') {
+                            targetPlayer = i;
+                            break;
+                        }
+                    }
+                    
+                    // If all players have avatars, allow re-selection for player 1
+                    if (targetPlayer === -1) {
+                        targetPlayer = 0;
+                    }
+                    
+                    selectAvatar(targetPlayer, emoji, option);
+                };
+                
+                avatarSelector.appendChild(option);
+            });
+            
+            sharedContainer.appendChild(avatarSelector);
+        }
+
+        function switchAvatarCategory(playerIndex, category, avatarSets, clickedBtn) {
+            const selector = document.getElementById(`avatar-selector-${playerIndex}`);
+            const categoriesDiv = clickedBtn.parentElement;
+            
+            // Remove active class from all category buttons
+            categoriesDiv.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to clicked button
+            clickedBtn.classList.add('active');
+            
+            // Show selector and populate avatars for selected category
+            selector.classList.add('visible');
+            populateAvatars(playerIndex, avatarSets[category], selector);
+        }
+
+        function selectAvatar(playerIndex, emoji, option) {
+            state.playerAvatars[playerIndex] = emoji;
+            document.getElementById(`avatar-display-${playerIndex}`).textContent = emoji;
+            
+            // Remove selected class from all options in this player's selector
+            const selector = option.parentElement;
+            selector.querySelectorAll('.avatar-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            option.classList.add('selected');
+            
+            // Check if player completed their profile
+            checkPlayerCompletion(playerIndex);
+        }
+
+        function checkPlayerCompletion(playerIndex) {
+            const nameInput = document.getElementById(`player-name-${playerIndex}`);
+            const avatarDisplay = document.getElementById(`avatar-display-${playerIndex}`);
+            const wrapper = nameInput.closest('.name-input-wrapper');
+            
+            const hasName = nameInput.value.trim().length > 0;
+            const hasAvatar = avatarDisplay.textContent !== '?';
+            
+            if (hasName && hasAvatar) {
+                wrapper.classList.add('completed');
+                avatarDisplay.classList.add('completed');
+            } else {
+                wrapper.classList.remove('completed');
+                avatarDisplay.classList.remove('completed');
+            }
+        }
+
+        function submitNames() {
+            let hasError = false;
+            
+            // Validate and get all player names
+            for (let i = 0; i < state.playerCount; i++) {
+                const input = document.getElementById(`player-name-${i}`);
+                const name = input.value.trim();
+                
+                // Remove previous error class
+                input.classList.remove('error');
+                
+                // Validation: check if empty or too long
+                if (name === '') {
+                    input.classList.add('error');
+                    hasError = true;
+                    // Set default name
+                    state.playerNames[i] = t('playerDefault', {n: i + 1});
+                } else if (name.length > 15) {
+                    input.classList.add('error');
+                    hasError = true;
+                    return;
+                } else {
+                    state.playerNames[i] = name;
+                }
+            }
+            
+            // If there are errors but we used defaults, allow continuation after brief delay
+            if (hasError) {
+                setTimeout(() => {
+                    showScreen('diff-screen');
+                    updateDifficultyButtons();
+                }, 600);
+            } else {
+                showScreen('diff-screen');
+                updateDifficultyButtons();
+            }
         }
 
         function selectDifficulty(diff) {
@@ -933,7 +1691,10 @@
             state.difficulty = diff;
             state.difficultySelected = true;
             updateDifficultyButtons();
-            document.getElementById('start-game-btn').style.display = 'block';
+            // Initialize game and show game screen with slide effect
+            setTimeout(() => {
+                initGame();
+            }, 300);
         }
 
         function updateDifficultyButtons() {
@@ -958,24 +1719,33 @@
             updateDifficultyDisplay();
             showScreen('game-screen');
             resetBoard(true);
+            document.getElementById('footer-start-btn').style.display = 'block';
         }
 
         function updateDifficultyDisplay() {
             const display = document.getElementById('diff-display');
             if (state.difficulty && difficultySettings[state.difficulty]) {
                 const settings = difficultySettings[state.difficulty];
-                display.innerHTML = `Difficulty: <span>${settings.label}</span> - ${settings.desc}`;
+                display.innerHTML = `${t('difficultyLabel')}: <span>${settings.label}</span> - ${settings.desc}`;
             }
         }
 
         function updateScoreUI() {
             const container = document.getElementById('player-indicators');
             container.innerHTML = '';
+            
+            // Display player scores
             for(let i=0; i<state.playerCount; i++) {
                 const div = document.createElement('div');
                 div.className = `p-score ${i === state.currentPlayer ? 'active-turn' : ''}`;
-                div.innerHTML = `P${i+1}: <b>${state.scores[i]}</b>`;
+                div.innerHTML = `${state.playerAvatars[i]} ${state.playerNames[i]}: <b>${state.scores[i]}</b>`;
                 container.appendChild(div);
+            }
+            
+            // Display streak in separate div
+            const streakDisplay = document.getElementById('streak-display');
+            if (streakDisplay) {
+                streakDisplay.innerHTML = `🔥 ${t('streak')}: <b>${state.consecutiveWins}</b> | 🏆 ${t('highestStreak')}: <b>${state.highestStreak}</b>`;
             }
         }
 
@@ -986,13 +1756,12 @@
             for (let i = 0; i < state.numCups; i++) {
                 const slot = document.createElement('div');
                 slot.id = `slot-${i}`; slot.className = 'cup-slot';
-                if (i === 0) {
-                    const ball = document.createElement('div');
-                    ball.id = 'ball'; ball.className = 'ball';
-                    slot.appendChild(ball);
-                }
+                const ball = document.createElement('div');
+                ball.className = 'ball';
+                slot.appendChild(ball);
                 const cup = document.createElement('div');
                 cup.className = 'cup'; cup.onclick = () => checkWin(i);
+                cup.hasBall = false;
                 slot.appendChild(cup);
                 area.appendChild(slot);
             }
@@ -1091,8 +1860,9 @@
                 c.classList.remove('lift');
                 c.classList.remove('lift-high');
             });
-            const ball = document.getElementById('ball');
-            if (ball) ball.classList.remove('visible');
+            document.querySelectorAll('.ball').forEach(b => {
+                b.classList.remove('visible');
+            });
             
             // Only show start button if explicitly requested (e.g., after game over)
             if (showStartButton) {
@@ -1122,24 +1892,31 @@
             document.getElementById('footer-start-btn').style.display = 'none';
             document.getElementById('gemini-msg').innerText = t('focus', {n: state.currentPlayer + 1});
             
-            const ball = document.getElementById('ball');
             const cups = document.querySelectorAll('.cup');
-            const ballCupIndex = state.mapping.indexOf(0);
-            const ballCup = cups[ballCupIndex];
+            const slots = document.querySelectorAll('.cup-slot');
+            
+            // Randomize starting cup
+            const randomCupIndex = Math.floor(Math.random() * state.numCups);
+            cups.forEach(cup => cup.hasBall = false);
+            cups[randomCupIndex].hasBall = true;
+            
+            // Get the ball inside the random slot
+            const randomSlot = slots[randomCupIndex];
+            const ball = randomSlot.querySelector('.ball');
             
             // Step 1: Show ball clearly
             ball.classList.add('visible');
             await new Promise(r => setTimeout(r, 800));
             
-            // Step 2: Lift the cup with the ball very high
-            ballCup.classList.add('lift-high');
-            await new Promise(r => setTimeout(r, 1200));
+            // Step 2: Lift the cup to show the ball is under it
+            cups[randomCupIndex].classList.add('lift-high');
+            await new Promise(r => setTimeout(r, 1500));
             
-            // Step 3: Put it back down normally
-            ballCup.classList.remove('lift-high');
+            // Step 3: Put the cup back down
+            cups[randomCupIndex].classList.remove('lift-high');
             await new Promise(r => setTimeout(r, 600));
             
-            // Step 4: Hide ball
+            // Step 4: Hide ball before shuffling starts
             ball.classList.remove('visible');
             await new Promise(r => setTimeout(r, 400));
 
@@ -1175,11 +1952,20 @@
             let attempts = 0;
             const maxAttempts = 20;
             
-            // Find ball position in mapping
-            const ballPos = state.mapping.indexOf(0);
+            // Find which visual position has the ball by checking the slots via mapping
+            let ballPos = -1;
+            for (let visualPos = 0; visualPos < state.numCups; visualPos++) {
+                const slotId = state.mapping[visualPos];
+                const slot = document.getElementById(`slot-${slotId}`);
+                const cup = slot.querySelector('.cup');
+                if (cup.hasBall) {
+                    ballPos = visualPos;
+                    break;
+                }
+            }
             
             // Higher difficulty increases chance of moving the ball cup
-            if (Math.random() < ballFocusChance) {
+            if (Math.random() < ballFocusChance && ballPos !== -1) {
                 // Pick the ball cup as one of the positions
                 pA = ballPos;
                 pB = Math.floor(Math.random() * state.numCups);
@@ -1218,11 +2004,9 @@
             elA.style.transform = `translateX(${matA.m41 + dist}px)`; 
             elB.style.transform = `translateX(${matB.m41 - dist}px)`;
             
-            // Add trail effects during Fever Mode
-            if (state.feverMode) {
-                addCupTrail(elA.querySelector('.cup') || elA);
-                addCupTrail(elB.querySelector('.cup') || elB);
-            }
+            // The hasBall property stays with the cup element (which is inside the slot)
+            // No need to swap hasBall because the slot and its cup move together
+            // The cup.hasBall property naturally follows the physical cup element
             
             state.mapping[pA] = idB; state.mapping[pB] = idA;
 
@@ -1283,28 +2067,32 @@
             if(state.isBusy || state.isPaused || !state.gameActive) return;
             state.isBusy = true;
             document.querySelectorAll('.cup').forEach(c => c.classList.add('lift'));
-            document.getElementById('ball').classList.add('visible');
             
-            if(idx === 0) {
+            const cups = document.querySelectorAll('.cup');
+            const slots = document.querySelectorAll('.cup-slot');
+            
+            // Show the ball in the cup that has it
+            cups.forEach((cup, i) => {
+                if (cup.hasBall) {
+                    slots[i].querySelector('.ball').classList.add('visible');
+                }
+            });
+            
+            const clickedCup = cups[idx];
+            
+            if(clickedCup.hasBall) {
                 // Correct guess - award point and continue playing
                 state.consecutiveWins++;
                 
-                // Fever Mode: Activate after 5 consecutive wins
-                if (state.consecutiveWins === 5 && !state.feverMode) {
-                    activateFeverMode();
+                // Update highest streak if current streak is higher
+                if (state.consecutiveWins > state.highestStreak) {
+                    state.highestStreak = state.consecutiveWins;
                 }
                 
-                // Apply score multiplier for Fever Mode
-                state.scores[state.currentPlayer] += state.scoreMultiplier;
+                // Award point
+                state.scores[state.currentPlayer] += 1;
                 
-                // Create fever particles on success
-                if (state.feverMode) {
-                    createFeverParticles(document.querySelector('.main-card'));
-                }
-                
-                document.getElementById('gemini-msg').innerText = state.feverMode ? 
-                    `🔥 ${t('gotIt', {n: state.currentPlayer + 1})} +${state.scoreMultiplier} POINTS! 🔥` : 
-                    t('gotIt', {n: state.currentPlayer + 1});
+                document.getElementById('gemini-msg').innerText = t('gotIt', {n: state.currentPlayer + 1});
                 
                 // Move to next player in multiplayer mode
                 if(state.playerCount > 1) {
@@ -1320,25 +2108,36 @@
                     }, 800);
                 }, 1500);
             } else {
-                // Incorrect guess - show restart button
+                // Incorrect guess - move to next player and continue
                 document.getElementById('gemini-msg').innerText = t('missed', {n: state.currentPlayer + 1});
                 
-                // Fever Mode: Reset on failure (devastating!)
-                state.consecutiveWins = 0;
-                if (state.feverMode) {
-                    deactivateFeverMode();
+                // Move to next player in multiplayer mode, or restart in solo
+                if(state.playerCount > 1) {
+                    state.currentPlayer = (state.currentPlayer + 1) % state.playerCount;
+                    
+                    setTimeout(() => { 
+                        updateScoreUI();
+                        resetBoard(false, false); // Don't show start button during continuous play
+                        // Auto-start next player's turn
+                        setTimeout(() => {
+                            playGame();
+                        }, 800);
+                    }, 1500);
+                } else {
+                    // Solo mode - game over on miss
+                    state.consecutiveWins = 0;
+                    
+                    setTimeout(() => { 
+                        // Reset to first player and clear scores
+                        state.scores = [0,0,0,0];
+                        state.currentPlayer = 0;
+                        updateScoreUI();
+                        resetBoard(false, false); // Don't show start button yet
+                        // Show restart button instead
+                        document.getElementById('footer-restart-btn').style.display = 'block';
+                        document.getElementById('gemini-msg').innerText = 'Game Over! Click Restart to try again.';
+                    }, 2000);
                 }
-                
-                setTimeout(() => { 
-                    // Reset to first player and clear scores
-                    state.scores = [0,0,0,0];
-                    state.currentPlayer = 0;
-                    updateScoreUI();
-                    resetBoard(false, false); // Don't show start button yet
-                    // Show restart button instead
-                    document.getElementById('footer-restart-btn').style.display = 'block';
-                    document.getElementById('gemini-msg').innerText = 'Game Over! Click Restart to try again.';
-                }, 2000);
             }
         }
 
@@ -1348,35 +2147,35 @@
             const gameArea = document.getElementById('game-area');
             const gameDashboard = document.querySelector('.game-dashboard');
             
-            // Add slide-out effect to game area and dashboard
-            gameArea.classList.add('slide-out');
-            gameDashboard.classList.add('slide-out');
+            // Add zoom-out effect to game area and dashboard
+            gameArea.classList.add('zoom-out-center');
+            gameDashboard.classList.add('zoom-out-center');
             restartBtn.style.opacity = '0';
             restartBtn.style.transition = 'opacity 0.3s ease';
             
             setTimeout(() => {
-                // Remove slide-out and reset
-                gameArea.classList.remove('slide-out');
-                gameDashboard.classList.remove('slide-out');
+                // Remove zoom-out and reset
+                gameArea.classList.remove('zoom-out-center');
+                gameDashboard.classList.remove('zoom-out-center');
                 
                 restartBtn.style.display = 'none';
                 restartBtn.style.opacity = '1';
                 restartBtn.style.transition = '';
                 
-                // Slide in the game area and dashboard from the left
-                gameArea.classList.add('slide-in');
-                gameDashboard.classList.add('slide-in');
+                // Zoom in the game area and dashboard from center
+                gameArea.classList.add('zoom-in-center');
+                gameDashboard.classList.add('zoom-in-center');
                 
-                // Show start shuffle button with sliding effect
+                // Show start shuffle button with zooming effect
                 startBtn.style.display = 'block';
-                startBtn.classList.add('slide-in');
+                startBtn.classList.add('zoom-in-center');
                 
                 // Remove animation classes after they complete
                 setTimeout(() => {
-                    startBtn.classList.remove('slide-in');
-                    gameArea.classList.remove('slide-in');
-                    gameDashboard.classList.remove('slide-in');
-                }, 600);
+                    startBtn.classList.remove('zoom-in-center');
+                    gameArea.classList.remove('zoom-in-center');
+                    gameDashboard.classList.remove('zoom-in-center');
+                }, 700);
                 
                 document.getElementById('gemini-msg').innerText = t('ready', {n: 1});
             }, 500);
