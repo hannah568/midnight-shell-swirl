@@ -181,8 +181,8 @@
         body {
             margin: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
-            background: var(--bg-dark);
-            color: white;
+            background: linear-gradient(135deg, #2C5F8D 0%, #1E3A5F 100%);
+            color: #2d2d2d;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -237,8 +237,8 @@
         .snowflake:nth-child(20) { left: 22%; animation-duration: 10.2s; animation-delay: 3.8s; font-size: 0.9em; }
 
         .main-card {
-            background: rgba(15, 12, 41, 0.95);
-            border: 2px solid hsl(var(--dynamic-hue), 80%, 60%);
+            background: rgba(135, 206, 235, 0.95);
+            border: 8px solid transparent;
             border-radius: 30px;
             width: 95%;
             max-width: 1100px; 
@@ -250,62 +250,68 @@
             align-items: center;
             position: relative;
             box-sizing: border-box;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8), 0 0 30px hsla(var(--dynamic-hue), 80%, 60%, 0.4);
+            box-shadow: 0 0 50px rgba(0,0,0,0.2);
             overflow: hidden;
-            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+            transition: box-shadow 0.3s ease;
         }
 
         .main-card::before {
             content: '';
             position: absolute;
-            inset: -4px;
+            inset: 0;
             border-radius: 30px;
-            padding: 4px;
-            background: conic-gradient(
-                from 0deg,
-                #ff0000 0deg,
-                #ff7700 60deg,
-                #ffff00 120deg,
-                #00ff00 180deg,
-                #0099ff 240deg,
-                #9933ff 300deg,
-                #ff0000 360deg
-            );
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            z-index: -1;
-            animation: rotateGlow 3s linear infinite, hueShift 10s linear infinite;
-            filter: blur(20px);
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .border-svg {
+            position: absolute;
+            inset: -5px;
+            width: calc(100% + 10px);
+            height: calc(100% + 10px);
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .border-svg rect {
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 200 800;
+            animation: dashRun 4s linear infinite;
+        }
+        
+        @keyframes dashRun {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -1000; }
         }
 
         .main-card::after {
             content: '';
             position: absolute;
             inset: 4px;
-            background: rgba(15, 12, 41, 0.95);
+            background: rgba(135, 206, 235, 0.95);
             border-radius: 28px;
             z-index: -1;
         }
 
         .main-card:hover {
-            box-shadow: 0 0 60px hsla(var(--dynamic-hue), 80%, 60%, 0.4), 0 0 100px hsla(var(--dynamic-hue), 80%, 60%, 0.3);
-            border-color: hsl(var(--dynamic-hue), 90%, 70%);
+            box-shadow: 0 0 60px rgba(0,0,0,0.9);
         }
 
         /* Menu UI */
         .top-nav { position: absolute; top: 25px; right: 25px; z-index: 1000; }
         .menu-trigger {
-            background: transparent;
+            background: rgba(0, 0, 0, 0.5);
             border: 2px solid var(--gold);
             color: var(--gold);
             z-index: 2;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             cursor: pointer;
             font-weight: 900;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -314,7 +320,7 @@
         }
 
         .menu-trigger:hover {
-            background: rgba(241, 196, 15, 0.1);
+            background: rgba(0, 0, 0, 0.7);
             box-shadow: 0 0 20px var(--gold-glow), 0 0 35px var(--gold-glow);
             transform: scale(1.1);
             border-color: var(--gold);
@@ -331,7 +337,7 @@
             flex-direction: row;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             padding: 0;
             transition: transform 0.4s ease-out, opacity 0.3s ease;
             z-index: 9999;
@@ -455,14 +461,15 @@
             display: flex;
             justify-content: center; 
             align-items: center; 
-            padding: 20px;
-            gap: 100px;
+            padding: 15px 25px;
+            gap: 195px;
+            overflow: visible;
         }
 
         .cup-slot {
             position: relative;
             width: 140px; 
-            height: 180px;
+            height: 200px;
             display: flex;
             justify-content: center;
             align-items: flex-end;
@@ -473,22 +480,25 @@
         .cup {
             width: 100px; 
             height: 140px;
-            background: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             /* Bullet shape: Top is a perfect semi-circle */
             border-radius: 80px 80px 12px 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(15, 23, 42, 0.9);
             cursor: pointer;
             z-index: 10;
             position: relative;
             /* Base rim effect from image */
-            box-shadow: 0 4px 0px -2px rgba(255,255,255,0.2);
-            transition: transform 0s, box-shadow 0.3s ease, border 0.3s ease;
+            box-shadow: 0 4px 0px -2px rgba(15, 23, 42, 0.7), 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            transition: transform 0s, box-shadow 0.3s ease, border 0.3s ease, background 0.3s ease;
         }
 
         .cup:hover {
             transform: scale(1.08);
-            box-shadow: 0 0 25px var(--gold-glow), 0 0 45px var(--gold-glow), 0 4px 0px -2px rgba(255,255,255,0.4);
-            border: 1px solid var(--gold);
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 0 25px var(--gold-glow), 0 0 45px var(--gold-glow), 0 4px 0px -2px rgba(15, 23, 42, 0.9), 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+            border: 1px solid rgba(15, 23, 42, 1);
         }
 
         .cup:hover::after {
@@ -519,14 +529,16 @@
         }
 
         .lift { 
-            transform: translateY(-200px) !important; 
+            transform: translateY(-120px) !important; 
             transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
             animation-delay: 0s !important;
+            z-index: 100 !important;
         }
         .lift-high { 
-            transform: translateY(-250px) !important; 
+            transform: translateY(-150px) !important; 
             transition: transform 0.6s ease-out !important; 
             animation-delay: 0s !important;
+            z-index: 100 !important;
         }
         .slam { 
             transform: translateY(0) !important; 
@@ -543,7 +555,7 @@
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             color: #000;
-            border: none;
+            border: 3px solid rgba(0, 0, 0, 0.5);
             border-radius: 15px;
             padding: 10px 30px;
             font-size: 0.95rem;
@@ -551,7 +563,7 @@
             text-transform: uppercase;
             cursor: pointer;
             box-shadow: 0 0 15px var(--gold-glow);
-            margin: 12px;
+            margin: 4px 8px;
             width: 260px;
             transition: all 0.3s ease;
             animation: hueShift 10s linear infinite;
@@ -598,7 +610,7 @@
         }
 
         .current-difficulty {
-            border: 1px solid var(--gold);
+            border: 3px solid rgba(0, 0, 0, 0.4);
             padding: 8px 20px;
             border-radius: 10px;
             margin-top: 0;
@@ -620,13 +632,14 @@
 
         .back-btn {
             position: absolute; top: 25px; left: 25px;
-            background: transparent; border: 1px solid var(--gold);
-            color: var(--gold); padding: 8px 20px; border-radius: 10px; cursor: pointer;
+            background: rgba(0, 0, 0, 0.5); border: 1px solid var(--gold);
+            color: var(--gold); padding: 10px 24px; border-radius: 10px; cursor: pointer;
             transition: all 0.3s ease;
             animation: hueShift 10s linear infinite;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.1rem;
         }
 
         .back-btn:hover {
@@ -661,9 +674,10 @@
         .game-area-container {
             flex: 0 0 60%;
             display: flex;
-            align-items: center;
+            align-items: flex-end;
             justify-content: center;
-            overflow: hidden;
+            overflow: visible;
+            padding: 0 0 40px 0;
         }
         
         .game-controls {
@@ -673,8 +687,17 @@
             align-items: center;
             justify-content: flex-start;
             overflow-y: auto;
-            padding-top: 8px;
-            gap: 8px;
+            padding-top: 4px;
+            gap: 4px;
+        }
+        
+        .game-buttons-row {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
         }
         
         .active { 
@@ -690,24 +713,48 @@
         }
         
         .label-header { 
-            color: var(--gold); 
+            background: linear-gradient(
+                90deg,
+                #ff3399,
+                #ff3333,
+                #ff9933,
+                #ffff33,
+                #99ff33,
+                #33ff33,
+                #33ff99,
+                #33ffff,
+                #3399ff,
+                #3333ff,
+                #9933ff,
+                #ff33ff,
+                #ff3399
+            );
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             letter-spacing: 2px; 
-            margin-bottom: 10px; 
-            font-size: 1.3rem; 
+            margin-bottom: 15px; 
+            font-size: 1.6rem; 
             font-weight: bold; 
-            animation: hueShift 10s linear infinite; 
+            animation: flowingRainbow 4s linear infinite;
+        }
+        
+        @keyframes flowingRainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
         }
         
         .multiplayer-scores {
             display: flex;
             gap: 12px;
             margin-top: 0;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             justify-content: center;
         }
         
         .p-score {
-            border: 1px solid var(--gold);
+            border: 3px solid rgba(0, 0, 0, 0.4);
             padding: 8px 15px;
             border-radius: 10px;
             font-size: 0.9rem;
@@ -717,6 +764,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            white-space: nowrap;
         }
 
         .p-score:hover {
@@ -728,7 +776,7 @@
         .p-score.active-turn {
             opacity: 1;
             background: rgba(241, 196, 15, 0.2);
-            border-width: 2px;
+            border-width: 3px;
             transform: scale(1.1);
         }
 
@@ -741,29 +789,29 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            margin-top: 8px;
-            gap: 8px;
+            margin-top: 4px;
+            gap: 4px;
         }
         
         .score-difficulty-row {
             display: flex;
-            gap: 18px;
+            gap: 16px;
             align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             width: 100%;
-            margin-bottom: 8px;
+            margin-bottom: 0;
         }
 
         /* Name Input Screen */
         .name-input-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            width: 96%;
-            max-width: 700px;
+            gap: 15px;
+            width: 90%;
+            max-width: 650px;
             align-items: center;
-            padding: 10px;
+            padding: 15px;
         }
 
         .shared-avatar-section {
@@ -779,7 +827,7 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             max-width: 600px;
         }
         
@@ -802,15 +850,16 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            padding: 8px;
-            border-radius: 10px;
+            gap: 6px;
+            padding: 12px;
+            border-radius: 12px;
             border: 2px solid transparent;
             transition: all 0.4s ease;
+            box-sizing: border-box;
         }
 
         .name-input-wrapper.completed {
-            border-color: #2ecc71;
+            border-color: rgba(46, 204, 113, 0.6);
             background: rgba(46, 204, 113, 0.1);
             box-shadow: 0 0 15px rgba(46, 204, 113, 0.3);
         }
@@ -819,37 +868,47 @@
             display: flex;
             gap: 10px;
             align-items: center;
+            width: 100%;
         }
 
         .name-input-field {
             flex: 1;
+            min-width: 0;
         }
 
         .name-input-label {
-            color: var(--gold);
-            font-size: 0.8rem;
+            color: #2d2d2d;
+            font-size: 0.85rem;
             font-weight: 700;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
         }
 
         .name-input {
             width: 100%;
-            padding: 10px 15px;
-            background: rgba(15, 12, 41, 0.8);
-            border: 2px solid var(--gold);
+            padding: 11px 15px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 10px;
-            color: white;
-            font-size: 0.95rem;
+            color: #2d2d2d;
+            font-size: 0.9rem;
             font-weight: 600;
             text-align: center;
             outline: none;
             transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(241, 196, 15, 0.2);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            line-height: normal;
+            display: block;
+            box-sizing: border-box;
+            vertical-align: middle;
+            margin: 0;
         }
 
         .name-input:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 20px var(--gold-glow), 0 0 35px rgba(241, 196, 15, 0.3);
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             transform: scale(1.02);
         }
 
@@ -863,9 +922,19 @@
             10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
             20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
+        
+        .name-input-container.shake {
+            animation: shake 0.5s;
+        }
+        
+        .btn-gold.error-btn {
+            background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%) !important;
+            box-shadow: 0 6px 20px rgba(255, 68, 68, 0.4), 0 0 30px rgba(255, 68, 68, 0.3) !important;
+            border-color: #ff6666 !important;
+        }
 
         .name-input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(45, 45, 45, 0.4);
         }
 
         /* Avatar Selection */
@@ -938,34 +1007,38 @@
         }
 
         .avatar-option {
-            width: 45px;
-            height: 45px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             border: 2px solid transparent;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             transition: all 0.3s ease;
-            background: rgba(15, 12, 41, 0.8);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
 
         .avatar-option:hover {
             transform: scale(1.15);
-            border-color: var(--gold);
-            box-shadow: 0 0 15px var(--gold-glow);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .avatar-option.selected {
-            border-color: var(--gold);
-            box-shadow: 0 0 20px var(--gold-glow);
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
             transform: scale(1.2);
+            background: rgba(255, 255, 255, 0.35);
         }
 
         .avatar-display {
-            width: 45px;
-            height: 45px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             border: 2px solid var(--gold);
             display: flex;
@@ -984,10 +1057,10 @@
         }
 
         .gemini-box { 
-            border: 2px solid var(--magic-purple); 
+            border: 3px solid rgba(0, 0, 0, 0.5); 
             padding: 8px 20px; 
             border-radius: 10px; 
-            margin-top: 5px;
+            margin-top: 12px;
             transition: all 0.3s ease;
             animation: hueShift 10s linear infinite;
             display: flex;
@@ -1004,20 +1077,21 @@
         /* Credits */
         .credits {
             position: absolute;
-            bottom: 15px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(241, 196, 15, 0.7);
-            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
             text-align: center;
             z-index: 100;
             letter-spacing: 1px;
-            animation: hueShift 10s linear infinite;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }
         
         .credits span {
             font-weight: bold;
-            color: var(--gold);
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
         }
     </style>
 </head>
@@ -1045,8 +1119,18 @@
     <div class="snowflake">❅</div>
 
     <div class="main-card">
+        <svg class="border-svg" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="borderGradient">
+                    <stop offset="0%" stop-color="#ff0080">
+                        <animate attributeName="stop-color" values="#ff0080;#ff4500;#ffd700;#00ff00;#00ffff;#0080ff;#8000ff;#ff0080" dur="4s" repeatCount="indefinite" />
+                    </stop>
+                </linearGradient>
+            </defs>
+            <rect id="borderRect" x="5" y="5" width="calc(100% - 10)" height="calc(100% - 10)" rx="30" ry="30" stroke="url(#borderGradient)" stroke-width="10" fill="none" style="stroke-dashoffset: 0;" />
+        </svg>
         <div id="splash-screen" class="screen active" style="justify-content: center; height: 100%;">
-            <h1 style="font-size: 2.5rem; text-align: center; margin-bottom: 25px; background: linear-gradient(90deg, #ff0000, #ff7700, #ffff00, #00ff00, #0099ff, #9933ff, #ff0000); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: hueShift 10s linear infinite;">MIDNIGHT SHELL SWIRL</h1>
+            <h1 style="font-size: 3rem; font-weight: 900; font-family: 'Arial Black', 'Helvetica', sans-serif; text-align: center; margin-bottom: 25px; background: linear-gradient(90deg, #ff0000, #ff7700, #ffff00, #00ff00, #0099ff, #9933ff, #ff0000); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: hueShift 10s linear infinite; letter-spacing: 2px; text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);">MIDNIGHT SHELL SWIRL</h1>
             <button class="btn-gold" onclick="showScreen('lang-screen')">ENTER THE GAME</button>
             <div class="credits">
                 Developed by <span>白漢娜 - HANNAH KEZIA BARGAMENTO</span>
@@ -1125,12 +1209,14 @@
                 </div>
 
                 <div class="game-controls">
-                    <button id="footer-start-btn" class="btn-gold" onclick="playGame()">START SHUFFLE</button>
-                    <button id="footer-restart-btn" class="btn-gold" onclick="restartAfterFail()" style="display: none;">RESTART</button>
+                    <div class="game-buttons-row">
+                        <button id="footer-start-btn" class="btn-gold" onclick="playGame()">START SHUFFLE</button>
+                        <button id="footer-restart-btn" class="btn-gold" onclick="restartAfterFail()" style="display: none;">RESTART</button>
+                    </div>
 
                     <div class="game-dashboard">
-                        <div id="player-indicators" class="multiplayer-scores"></div>
                         <div class="score-difficulty-row">
+                            <div id="player-indicators" class="multiplayer-scores"></div>
                             <div id="streak-display" class="p-score streak-display"></div>
                             <div class="current-difficulty" id="diff-display"></div>
                         </div>
@@ -1150,6 +1236,29 @@
             document.documentElement.style.setProperty('--dynamic-hue', hue + 'deg');
             document.documentElement.style.setProperty('--mouse-x', (x * 100) + '%');
             document.documentElement.style.setProperty('--mouse-y', (y * 100) + '%');
+            
+            // Update SVG border based on mouse position - dramatic color shifts
+            const borderRect = document.getElementById('borderRect');
+            if (borderRect) {
+                const opacity = 0.8 + (y * 0.2); // Opacity from 0.8 to 1
+                const hueRotate = x * 720; // Double rotation for more color variety
+                const saturation = 120 + (y * 80); // Higher saturation
+                const brightness = 1.1 + (Math.abs(0.5 - y) * 0.4); // Brightness peaks in middle
+                borderRect.style.opacity = opacity;
+                borderRect.style.filter = `hue-rotate(${hueRotate}deg) brightness(${brightness}) saturate(${saturation}%)`;
+            }
+        });
+        
+        // Set SVG rect dimensions after load
+        window.addEventListener('load', () => {
+            const borderRect = document.getElementById('borderRect');
+            const borderSvg = document.querySelector('.border-svg');
+            if (borderRect && borderSvg) {
+                const width = borderSvg.clientWidth - 8;
+                const height = borderSvg.clientHeight - 8;
+                borderRect.setAttribute('width', width);
+                borderRect.setAttribute('height', height);
+            }
         });
 
         let state = { 
@@ -1162,6 +1271,44 @@
             // Fever Mode tracking
             consecutiveWins: 0, highestStreak: 0, feverMode: false, scoreMultiplier: 1
         };
+
+        // Funny and Motivational Gemini Messages
+        const geminiMessages = [
+            "✨ Trust your instincts, they're rarely wrong!",
+            "🎯 Focus like a laser beam!",
+            "🧠 Your brain is sharper than you think!",
+            "💪 Champions are made in moments like these!",
+            "🔮 The cup doesn't lie... but it does shuffle!",
+            "⚡ Lightning reflexes = Lightning results!",
+            "🎪 Life's a circus, but you're the ringmaster!",
+            "🌟 Every expert was once a beginner!",
+            "🎲 Calculated risks lead to epic wins!",
+            "🧘 Zen mode: Activated!",
+            "🚀 To the moon and beyond!",
+            "🏆 Victory loves preparation!",
+            "👁️ Eyes on the prize, mind on the game!",
+            "🔥 You're on fire! (Not literally though)",
+            "💎 Pressure makes diamonds!",
+            "🎯 Aim high, guess higher!",
+            "🌈 After confusion comes clarity!",
+            "⏰ It's clutch o'clock!",
+            "🧩 Solving puzzles is your superpower!",
+            "🎭 Plot twist: You're actually good at this!",
+            "☕ Coffee is optional, winning is not!",
+            "🌪️ Chaos is just another word for opportunity!",
+            "🎸 Rock and roll with it!",
+            "🍀 Make your own luck!",
+            "🦅 Eagle eyes never miss!",
+            "💡 Brilliant minds think... and win!",
+            "🌊 Go with the flow, catch the ball!",
+            "🎨 This is your masterpiece in motion!",
+            "🔔 Ring the bell of success!",
+            "🌙 Moon's watching, show it what you got!"
+        ];
+
+        function getRandomGeminiMessage() {
+            return geminiMessages[Math.floor(Math.random() * geminiMessages.length)];
+        }
 
         // Fever Mode Functions
         function activateFeverMode() {
@@ -1551,17 +1698,26 @@
 
         function switchAvatarCategoryForAll(category, avatarSets, clickedBtn) {
             const categoriesDiv = clickedBtn.parentElement;
+            const sharedContainer = document.getElementById('shared-avatar-selector');
+            
+            // Check if this button is already active (toggle behavior)
+            const isAlreadyActive = clickedBtn.classList.contains('active');
             
             // Remove active class from all category buttons
             categoriesDiv.querySelectorAll('.category-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
+            // If it was already active, hide the selector and return
+            if (isAlreadyActive) {
+                sharedContainer.innerHTML = '';
+                return;
+            }
+            
             // Add active class to clicked button
             clickedBtn.classList.add('active');
             
             // Get or create shared avatar selector
-            const sharedContainer = document.getElementById('shared-avatar-selector');
             sharedContainer.innerHTML = '';
             
             // Create ONE set of avatar options for all players to choose from
@@ -1629,6 +1785,16 @@
             
             // Check if player completed their profile
             checkPlayerCompletion(playerIndex);
+            
+            // Hide the avatar selector after selection
+            const sharedContainer = document.getElementById('shared-avatar-selector');
+            if (sharedContainer) {
+                sharedContainer.innerHTML = '';
+            }
+            
+            // Remove active class from all category buttons
+            const categoryButtons = document.querySelectorAll('.avatar-categories .category-btn');
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
         }
 
         function checkPlayerCompletion(playerIndex) {
@@ -1650,40 +1816,50 @@
 
         function submitNames() {
             let hasError = false;
+            const continueBtn = document.querySelector('#name-screen .btn-gold');
+            const nameContainer = document.getElementById('nameInputContainer');
+            
+            // Remove previous error states
+            continueBtn.classList.remove('error-btn');
+            nameContainer.classList.remove('shake');
             
             // Validate and get all player names
             for (let i = 0; i < state.playerCount; i++) {
                 const input = document.getElementById(`player-name-${i}`);
                 const name = input.value.trim();
+                const hasAvatar = state.playerAvatars[i] !== undefined;
                 
                 // Remove previous error class
                 input.classList.remove('error');
                 
-                // Validation: check if empty or too long
-                if (name === '') {
+                // Validation: check if name is empty or no avatar selected
+                if (name === '' || !hasAvatar) {
                     input.classList.add('error');
                     hasError = true;
-                    // Set default name
-                    state.playerNames[i] = t('playerDefault', {n: i + 1});
                 } else if (name.length > 15) {
                     input.classList.add('error');
                     hasError = true;
-                    return;
                 } else {
                     state.playerNames[i] = name;
                 }
             }
             
-            // If there are errors but we used defaults, allow continuation after brief delay
+            // If there are errors, shake center content and turn button red
             if (hasError) {
+                nameContainer.classList.add('shake');
+                continueBtn.classList.add('error-btn');
+                
+                // Remove shake after animation completes
                 setTimeout(() => {
-                    showScreen('diff-screen');
-                    updateDifficultyButtons();
-                }, 600);
-            } else {
-                showScreen('diff-screen');
-                updateDifficultyButtons();
+                    nameContainer.classList.remove('shake');
+                }, 500);
+                
+                return; // Don't proceed to next screen
             }
+            
+            // All validation passed, continue to next screen
+            showScreen('diff-screen');
+            updateDifficultyButtons();
         }
 
         function selectDifficulty(diff) {
@@ -1752,6 +1928,14 @@
         function setupGameArea() {
             const area = document.getElementById('game-area');
             area.innerHTML = '';
+            
+            // Adjust gap based on number of cups
+            if (state.numCups === 3) {
+                area.style.gap = '130px';
+            } else if (state.numCups === 4) {
+                area.style.gap = '100px';
+            }
+            
             state.mapping = Array.from({length: state.numCups}, (_, i) => i);
             for (let i = 0; i < state.numCups; i++) {
                 const slot = document.createElement('div');
@@ -1890,7 +2074,7 @@
             if(state.isBusy) return;
             state.isBusy = true; state.gameActive = true;
             document.getElementById('footer-start-btn').style.display = 'none';
-            document.getElementById('gemini-msg').innerText = t('focus', {n: state.currentPlayer + 1});
+            document.getElementById('gemini-msg').innerText = getRandomGeminiMessage();
             
             const cups = document.querySelectorAll('.cup');
             const slots = document.querySelectorAll('.cup-slot');
@@ -2092,7 +2276,7 @@
                 // Award point
                 state.scores[state.currentPlayer] += 1;
                 
-                document.getElementById('gemini-msg').innerText = t('gotIt', {n: state.currentPlayer + 1});
+                document.getElementById('gemini-msg').innerText = getRandomGeminiMessage();
                 
                 // Move to next player in multiplayer mode
                 if(state.playerCount > 1) {
